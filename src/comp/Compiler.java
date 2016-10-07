@@ -307,7 +307,15 @@ public class Compiler {
 		case IDENT:
 			// # corrija: faça uma busca na TS para buscar a classe
 			// IDENT deve ser uma classe.
-			result = null;
+			String className = lexer.getStringValue();
+			result = symbolTable.getInGlobal(className);
+			
+			if(result == null) {
+				//signalError.showError("Unknown class: " + className);
+				System.out.println("Type unexpected"); // REMOVER
+				result = Type.undefinedType; // REMOVER
+			}
+			
 			break;
 		default:
 			signalError.showError("Type expected");
