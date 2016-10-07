@@ -9,4 +9,8 @@ public class TypeUndefined extends Type {
       return "int";
    }
    
+   public String getKraname() {
+	   return "int";
+   }
+   
 }

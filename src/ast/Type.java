@@ -11,12 +11,15 @@ abstract public class Type {
     public static Type stringType = new TypeString();
     public static Type voidType = new TypeVoid();
     public static Type undefinedType = new TypeUndefined();
+    //public static Type classType = new TypeClass();
 
     public String getName() {
         return name;
     }
 
     abstract public String getCname();
+    
+    abstract public String getKraname();
 
     private String name;
 }

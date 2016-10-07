@@ -9,5 +9,9 @@ public class TypeString extends Type {
    public String getCname() {
       return "char *";
    }
+   
+   public String getKraname() {
+	   return "String";
+   }
 
 }

@@ -23,6 +23,10 @@ public class KraClass extends Type {
       return getName();
    }
    
+   public String getKraname() {
+	   return getName();
+   }
+   
    /*
     * Metodos Superclass
     */
@@ -76,7 +80,13 @@ public class KraClass extends Type {
 	   // printa variaveis de instancia
 	   Iterator<InstanceVariable> e = instanceVariableList.elements();
 	   while(e.hasNext()) {
-		   //e.next().genKra(pw);
+		   e.next().genKra(pw);
+	   }
+	   
+	   // printa metodos privados
+	   Iterator<Method> m = publicMethodList.elements();
+	   while(m.hasNext()) {
+		   m.next().genKra(pw);
 	   }
 	   
 	   pw.sub();
