@@ -308,14 +308,17 @@ public class Compiler {
 		return result;
 	}
 
-	private void compositeStatement() {
+	private StatementComposite compositeStatement() {
 
 		lexer.nextToken();
-		statementList();
+		StatementList statementList = statementList();
 		if ( lexer.token != Symbol.RIGHTCURBRACKET )
 			signalError.showError("} expected");
 		else
 			lexer.nextToken();
+		
+		StatementComposite statementComposite = new StatementComposite(statementList);
+		return statementComposite;
 	}
 
 	private StatementList statementList() {
@@ -377,7 +380,7 @@ public class Compiler {
 			statement = nullStatement();
 			break;
 		case LEFTCURBRACKET:
-			compositeStatement();
+			statement = compositeStatement();
 			break;
 		default:
 			signalError.showError("Statement expected");

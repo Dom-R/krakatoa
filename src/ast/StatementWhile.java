@@ -5,6 +5,7 @@ public class StatementWhile extends Statement {
 		this.expr = expr;
 		this.statement = statement;
 	}
+	
 	@Override
 	public void genC(PW pw) {
 		pw.printIdent("while ( ");
