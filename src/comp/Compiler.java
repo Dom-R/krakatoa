@@ -139,7 +139,12 @@ public class Compiler {
 			String superclassName = lexer.getStringValue();
 			
 			// Inserir verificacao caso superclasse nao esteja no symboltable
-			KraClass superclass = symbolTable.getInGlobal(className);
+			KraClass superclass = symbolTable.getInGlobal(superclassName);
+			
+			// Não tem teste se a superclasse existe ou não
+			if(superclass == null) {
+				// signalError.showError("No superclass with name:" + superclassName
+			}
 			
 			currentClass.setSuperclass(superclass);
 			
