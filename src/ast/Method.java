@@ -3,6 +3,8 @@ package ast;
  * Method Class
  */
 
+import java.util.Iterator;
+
 import lexer.*;
 
 public class Method {
@@ -33,6 +35,30 @@ public class Method {
    }
    
    public void genKra(PW pw) {
+	   pw.printIdent(qualifier + " " + type.getKraname() + " " + name + "(");
+	   
+	   if(paramList != null) {
+		   pw.print(" ");
+		   Iterator<Parameter> p = paramList.elements();
+		   while(p.hasNext()) {
+			   p.next().genKra(pw);
+			   if(p.hasNext()) pw.print(", ");
+		   }
+		   pw.print(" ");
+	   }
+	   
+	   pw.println(") {");
+	   pw.add();
+	   
+	   /*
+	   Iterator<Statement> s = statementList.elements();
+	   while(s.hasNext()) {
+		   //s.next().genKra(pw);
+	   }
+	   */
+	   
+	   pw.sub();
+	   pw.printlnIdent("}");
    }
    
    private String name;
