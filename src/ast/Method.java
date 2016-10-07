@@ -2,25 +2,44 @@ package ast;
 /*
  * Method Class
  */
-public class Method extends Type {
+
+import lexer.*;
+
+public class Method {
 	
-   public Method(String name, Type type, /*Symbol qualifier,*/ ParamList paramList, StatementList statementList ) {
-	  super(name);
-      this.paramList = paramList;
-      this.statementList = statementList;
+   public Method(String name, Type type, Symbol qualifier/*, ParamList paramList, StatementList statementList*/ ) {
+	  this.name = name;
+	  this.type = type;
+	  this.qualifier = qualifier;
+	  this.paramList = null;
+      this.statementList = null;
+      this.hasReturn = false;
    }
    
-	public String getCname() {
-		return getName();
-	}
+   public void setParamList(ParamList paramList) {
+	   this.paramList = paramList;
+   }
+   
+   public void setStatementList(StatementList statementList) {
+	   this.statementList = statementList;
+   }
+   
+   public void hasReturn() {
+	   hasReturn = true;
+   }
+   
+   public boolean getReturn() {
+	   return hasReturn;
+   }
    
    public void genKra(PW pw) {
    }
    
    private String name;
    private Type type;
-   //private Symbol qualifier;
+   private Symbol qualifier;
    private ParamList paramList;
    private StatementList statementList;
+   private boolean hasReturn;
    
 }

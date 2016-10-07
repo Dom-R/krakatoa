@@ -122,16 +122,15 @@ public class Compiler {
 		 * Qualifier ::= [ "static" ]  ( "private" | "public" )
 		 */
 		
-		InstanceVariableList instanceVariableList = new InstanceVariableList();
-		MethodList privateMethodList = new MethodList();
-		MethodList publicMethodList = new MethodList();
-		
 		if ( lexer.token != Symbol.CLASS ) signalError.showError("'class' expected");
 		lexer.nextToken();
 		if ( lexer.token != Symbol.IDENT )
 			signalError.show(ErrorSignaller.ident_expected);
+		
 		String className = lexer.getStringValue();
-		symbolTable.putInGlobal(className, new KraClass(className)); //Instanciar objeto da classe fora do symboltable e inserir ela pelo symboltable. Alterar um dos objetos altera o outro?
+		currentClass = new KraClass(className);
+		symbolTable.putInGlobal(className, currentClass); //Instanciar objeto da classe fora do symboltable e inserir ela pelo symboltable. Alterar um dos objetos altera o outro?
+		
 		lexer.nextToken();
 		if ( lexer.token == Symbol.EXTENDS ) {
 			lexer.nextToken();
@@ -141,7 +140,9 @@ public class Compiler {
 			
 			// Inserir verificacao caso superclasse nao esteja no symboltable
 			KraClass superclass = symbolTable.getInGlobal(className);
-
+			
+			currentClass.setSuperclass(superclass);
+			
 			lexer.nextToken();
 		}
 		if ( lexer.token != Symbol.LEFTCURBRACKET )
@@ -171,16 +172,16 @@ public class Compiler {
 			lexer.nextToken();
 			if ( lexer.token == Symbol.LEFTPAR ) {
 				if(qualifier == Symbol.PRIVATE)
-					privateMethodList.addElement(methodDec(t, name, qualifier));
+					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
 				else
-					publicMethodList.addElement(methodDec(t, name, qualifier));
+					currentClass.addPublicMethod(methodDec(t, name, qualifier));
 			} else if ( qualifier != Symbol.PRIVATE )
 				signalError.showError("Attempt to declare a public instance variable");
 			else {
 				ArrayList<InstanceVariable> arrayInstanceVariable = instanceVarDec(t, name);
 				for( InstanceVariable i : arrayInstanceVariable ) {
 					//System.out.println("Debug: " + i.getType() + " " + i.getName());
-					instanceVariableList.addElement(i);
+					currentClass.addInstanceVariable(i);
 				}
 			}
 		}
@@ -188,8 +189,7 @@ public class Compiler {
 			signalError.showError("public/private or \"}\" expected");
 		lexer.nextToken();
 
-		//KraClass kraClass = new KraClass(className);
-		return null; // remover e arrumar isso
+		return currentClass;
 	}
 
 	private ArrayList<InstanceVariable> instanceVarDec(Type type, String name) {
@@ -218,6 +218,8 @@ public class Compiler {
 		 *                StatementList "}"
 		 */
 
+		currentMethod = new Method(name, type, qualifier);
+		
 		lexer.nextToken();
 		ParamList paramList = null;
 		if ( lexer.token != Symbol.RIGHTPAR ) paramList = formalParamDec();
@@ -232,8 +234,10 @@ public class Compiler {
 
 		lexer.nextToken();
 		
-		Method method = new Method(name, type, paramList, statementList);
-		return method;
+		currentMethod.setParamList(paramList);
+		currentMethod.setStatementList(statementList);
+		
+		return currentMethod;
 	}
 
 	private void localDec() {
@@ -505,6 +509,9 @@ public class Compiler {
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
+		
+		// Seta que metodo tem return
+		currentMethod.hasReturn();
 		
 		StatementReturn statementReturn = new StatementReturn(expr);
 		return statementReturn;
@@ -880,6 +887,8 @@ public class Compiler {
 
 	}
 
+	private Method			currentMethod;
+	private KraClass		currentClass;
 	private SymbolTable		symbolTable;
 	private Lexer			lexer;
 	private ErrorSignaller	signalError;
