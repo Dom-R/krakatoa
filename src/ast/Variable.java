@@ -6,6 +6,10 @@ public class Variable {
         this.name = name;
         this.type = type;
     }
+    
+    public void genKra(PW pw) {
+    	
+    }
 
     public String getName() { return name; }
 

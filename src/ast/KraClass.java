@@ -1,4 +1,7 @@
 package ast;
+
+import java.util.Iterator;
+
 /*
  * Krakatoa Class
  */
@@ -64,7 +67,23 @@ public class KraClass extends Type {
 	   privateMethodList.addElement(m);
    }
    
-   private String name;
+   public void genKra(PW pw) {
+	   pw.print("class " + getCname());
+	   if(superclass != null) pw.print(" extends " + superclass.getCname());
+	   pw.println(" {");
+	   pw.add();
+	   
+	   // printa variaveis de instancia
+	   Iterator<InstanceVariable> e = instanceVariableList.elements();
+	   while(e.hasNext()) {
+		   //e.next().genKra(pw);
+	   }
+	   
+	   pw.sub();
+	   pw.println("}");
+   }
+   
+   //private String name;
    private KraClass superclass;
    private InstanceVariableList instanceVariableList;
    private MethodList publicMethodList, privateMethodList;
