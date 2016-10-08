@@ -530,20 +530,44 @@ public class Compiler {
 		return statementReturn;
 	}
 
-	private void readStatement() {
+	private StatementRead readStatement() {
+
+		ArrayList<VariableExpr> variableExprList = new ArrayList<VariableExpr>();
+		
 		lexer.nextToken();
 		if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
 		lexer.nextToken();
 		while (true) {
+			boolean flagThis = false;
 			if ( lexer.token == Symbol.THIS ) {
 				lexer.nextToken();
 				if ( lexer.token != Symbol.DOT ) signalError.showError(". expected");
 				lexer.nextToken();
+				flagThis = true;
 			}
 			if ( lexer.token != Symbol.IDENT )
 				signalError.show(ErrorSignaller.ident_expected);
 
 			String name = lexer.getStringValue();
+			
+			// verifica se a variavel eh uma variavel de instancia
+			Variable variable = null;
+			if(flagThis) {
+				// Procura a variavel de instancia e adiciona ela a lista de VariableExpr
+				Iterator<InstanceVariable> i = currentClass.getInstanceVariableList().elements();
+				while(i.hasNext()) {
+					InstanceVariable v = i.next();
+					if(v.getName() == name) {
+						variable = v;
+					}
+				}
+			} else {
+				if(symbolTable.getInLocal(name) != null) {
+					variable = symbolTable.getInLocal(name);
+				}
+			}
+			variableExprList.add(new VariableExpr(variable));
+			
 			lexer.nextToken();
 			if ( lexer.token == Symbol.COMMA )
 				lexer.nextToken();
@@ -556,6 +580,9 @@ public class Compiler {
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
+		
+		StatementRead statementRead = new StatementRead(variableExprList);
+		return statementRead;
 	}
 
 	private StatementWrite writeStatement() {
