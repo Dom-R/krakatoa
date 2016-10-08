@@ -52,7 +52,17 @@ public class Method {
 	   
 	   Iterator<Statement> s = statementList.elements();
 	   while(s.hasNext()) {
-		   s.next().genKra(pw);
+		   /*
+		    * Debug pois alguns statements ainda retornam null
+		    */
+		   Statement stmt = s.next();
+		   if(stmt != null)
+			   stmt.genKra(pw);
+		   /*
+		    * Fim Debug pois alguns statements ainda retornam null
+		    */
+		   
+		   //s.next().genKra(pw);
 	   }
 	   
 	   pw.sub();
