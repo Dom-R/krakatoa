@@ -6,6 +6,7 @@ public class StatementAssert extends Statement {
 		this.lineNumber = lineNumber;
 		this.message = message;
 	}
+	
 	@Override
 	public void genC(PW pw) {
 		pw.printIdent("if ( !( ");
@@ -15,7 +16,17 @@ public class StatementAssert extends Statement {
 		pw.printlnIdent("puts(\"" + message +  "\");");
 		pw.sub();
 		pw.printlnIdent("}");
-
+	}
+	
+	@Override
+	public void genKra(PW pw) {
+		pw.printIdent("if ( !( ");
+		//expr.genKra(pw, false);
+		pw.println(" ) ) {");
+		pw.add();
+		pw.printlnIdent("System.out.println(\"" + message +  "\");");
+		pw.sub();
+		pw.printlnIdent("}");
 	}
 
 	public Expr getExpr() {

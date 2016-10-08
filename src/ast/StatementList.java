@@ -22,7 +22,7 @@ public class StatementList {
     
     public void genKra(PW pw) {
     	for ( Statement stmt : statementList ) {
-    		//stmt.genKra ();
+    		stmt.genKra(pw);
     	}
 	}
 

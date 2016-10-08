@@ -6,6 +6,7 @@ public class StatementIf extends Statement {
 		this.statementThen = statementThen;
 		this.statementElse = statementElse;
 	}
+	
 	@Override
 	public void genC(PW pw) {
 		pw.printIdent("if ( ");
@@ -18,6 +19,22 @@ public class StatementIf extends Statement {
 			pw.println("else");
 			pw.add();
 			statementElse.genC(pw);
+			pw.sub();
+		}
+	}
+	
+	@Override
+	public void genKra(PW pw) {
+		pw.printIdent("if ( ");
+		//expr.genKra(pw, false);
+		pw.println(" )");
+		pw.add();
+		statementThen.genKra(pw);
+		pw.sub();
+		if( statementElse != null ) {
+			pw.println("else");
+			pw.add();
+			statementElse.genKra(pw);
 			pw.sub();
 		}
 	}

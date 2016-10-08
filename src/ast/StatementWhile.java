@@ -15,6 +15,16 @@ public class StatementWhile extends Statement {
 		statement.genC(pw);
 		pw.sub();
 	}
+	
+	@Override
+	public void genKra(PW pw) {
+		pw.printIdent("while ( ");
+		//expr.genKra(pw, false);
+		pw.println(" )");
+		pw.add();
+		statement.genKra(pw);
+		pw.sub();
+	}
 
 	private Expr expr;
 	private Statement statement;

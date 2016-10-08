@@ -7,10 +7,18 @@ public class StatementComposite extends Statement {
 	
 	@Override
 	public void genC(PW pw) {
-		// TODO Auto-generated method stub
 		pw.println("{");
 		pw.add();
 		//statementList.genC(pw);
+		pw.sub();
+		pw.println("}");
+	}
+	
+	@Override
+	public void genKra(PW pw) {
+		pw.println("{");
+		pw.add();
+		statementList.genKra(pw);
 		pw.sub();
 		pw.println("}");
 	}

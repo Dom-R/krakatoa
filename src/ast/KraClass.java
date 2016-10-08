@@ -83,8 +83,14 @@ public class KraClass extends Type {
 		   e.next().genKra(pw);
 	   }
 	   
-	   // printa metodos privados
+	   // printa metodos publicos
 	   Iterator<Method> m = publicMethodList.elements();
+	   while(m.hasNext()) {
+		   m.next().genKra(pw);
+	   }
+	   
+	// printa metodos privados
+	   m = privateMethodList.elements();
 	   while(m.hasNext()) {
 		   m.next().genKra(pw);
 	   }

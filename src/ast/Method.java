@@ -50,12 +50,10 @@ public class Method {
 	   pw.println(") {");
 	   pw.add();
 	   
-	   /*
 	   Iterator<Statement> s = statementList.elements();
 	   while(s.hasNext()) {
-		   //s.next().genKra(pw);
+		   s.next().genKra(pw);
 	   }
-	   */
 	   
 	   pw.sub();
 	   pw.printlnIdent("}");

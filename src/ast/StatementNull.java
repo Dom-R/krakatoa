@@ -8,4 +8,9 @@ public class StatementNull extends Statement {
 	public void genC(PW pw) {
 		pw.printIdent(";");
 	}
+	
+	@Override
+	public void genKra(PW pw) {
+		pw.printlnIdent(";");
+	}
 }

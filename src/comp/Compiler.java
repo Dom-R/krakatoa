@@ -728,6 +728,10 @@ public class Compiler {
 			 *      aClass = symbolTable.getInGlobal(className); 
 			 *      if ( aClass == null ) ...
 			 */
+			KraClass classObj = symbolTable.getInGlobal(className);
+			if( classObj == null ) {
+				// Faz algo que não sabemos
+			}
 
 			lexer.nextToken();
 			if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
@@ -737,6 +741,7 @@ public class Compiler {
 			/*
 			 * return an object representing the creation of an object
 			 */
+			// Criar e retornar um literalClass?
 			return null;
 			/*
           	 * PrimaryExpr ::= "super" "." Id "(" [ ExpressionList ] ")"  | 
