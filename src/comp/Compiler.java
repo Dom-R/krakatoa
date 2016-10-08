@@ -558,30 +558,36 @@ public class Compiler {
 		lexer.nextToken();
 	}
 
-	private void writeStatement() {
+	private StatementWrite writeStatement() {
 
 		lexer.nextToken();
 		if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
 		lexer.nextToken();
-		exprList();
+		ExprList exprList = exprList();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 		lexer.nextToken();
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
+		
+		StatementWrite statementWrite = new StatementWrite(exprList);
+		return statementWrite;
 	}
 
-	private void writelnStatement() {
+	private StatementWrite writelnStatement() {
 
 		lexer.nextToken();
 		if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
 		lexer.nextToken();
-		exprList();
+		ExprList exprList = exprList();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 		lexer.nextToken();
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
+		
+		StatementWrite statementWrite = new StatementWrite(exprList, true);
+		return statementWrite;
 	}
 
 	private StatementBreak breakStatement() {
