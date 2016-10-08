@@ -13,13 +13,11 @@ public class StatementWrite extends Statement {
 	
 	@Override
 	public void genC(PW pw) {
-		if (flagln)
-			pw.printIdent("System.out.println( ");
-		else
-			pw.printIdent("System.out.print( ");
-		
+		pw.printIdent("printf( "); //Arrumar aqui para pegar os tipos das variáveis
 		exprList.genC (pw);
 		pw.println(" );");
+		if (flagln)
+			pw.println("printf(\"\n\" );");
 	}
 	
 	@Override
