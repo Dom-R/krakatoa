@@ -376,13 +376,13 @@ public class Compiler {
 			statement = returnStatement();
 			break;
 		case READ:
-			readStatement();
+			statement = readStatement();
 			break;
 		case WRITE:
-			writeStatement();
+			statement = writeStatement();
 			break;
 		case WRITELN:
-			writelnStatement();
+			statement = writelnStatement();
 			break;
 		case IF:
 			statement = ifStatement();
