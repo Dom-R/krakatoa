@@ -58,6 +58,8 @@ public class Method {
 		   Statement stmt = s.next();
 		   if(stmt != null)
 			   stmt.genKra(pw);
+		   else
+			   System.out.println("Debug: Statement Null!");
 		   /*
 		    * Fim Debug pois alguns statements ainda retornam null
 		    */

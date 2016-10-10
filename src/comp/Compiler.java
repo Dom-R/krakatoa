@@ -440,6 +440,7 @@ public class Compiler {
 	 */
 	private Expr assignExprLocalDec() {
 
+		Expr expr = null;
 		if ( lexer.token == Symbol.INT || lexer.token == Symbol.BOOLEAN
 				|| lexer.token == Symbol.STRING ||
 				// token é uma classe declarada textualmente antes desta
@@ -457,17 +458,18 @@ public class Compiler {
 			/*
 			 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ]
 			 */
-			expr();
+			expr = expr();
 			if ( lexer.token == Symbol.ASSIGN ) {
 				lexer.nextToken();
-				expr();
+				Expr right = expr();
 				if ( lexer.token != Symbol.SEMICOLON )
 					signalError.showError("';' expected", true);
 				else
 					lexer.nextToken();
+				expr = new CompositeExpr(expr, Symbol.ASSIGN, right);
 			}
 		}
-		return null;
+		return expr;
 	}
 
 	private ExprList realParameters() {
