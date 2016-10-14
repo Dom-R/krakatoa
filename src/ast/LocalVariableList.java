@@ -2,7 +2,7 @@ package ast;
 
 import java.util.*;
 
-public class LocalVariableList {
+public class LocalVariableList extends Statement {
 
     public LocalVariableList() {
        localList = new ArrayList<Variable>();
@@ -21,5 +21,17 @@ public class LocalVariableList {
     }
 
     private ArrayList<Variable> localList;
+
+	@Override
+	public void genC(PW pw) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void genKra(PW pw) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

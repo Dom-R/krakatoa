@@ -438,9 +438,9 @@ public class Compiler {
 	/*
 	 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ] | LocalDec
 	 */
-	private Expr assignExprLocalDec() {
+	private Statement assignExprLocalDec() { // Retornar Statement
 
-		Expr expr = null;
+		Statement statement = null;
 		if ( lexer.token == Symbol.INT || lexer.token == Symbol.BOOLEAN
 				|| lexer.token == Symbol.STRING ||
 				// token é uma classe declarada textualmente antes desta
@@ -452,24 +452,23 @@ public class Compiler {
 			 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ] | LocalDec 
 			 * LocalDec ::= Type IdList ``;''
 			 */
-			localDec();
+			localDec(); // retornar LocalVariableList que herda de statement
 		}
 		else {
 			/*
 			 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ]
 			 */
-			expr = expr();
+			expr();
 			if ( lexer.token == Symbol.ASSIGN ) {
 				lexer.nextToken();
-				Expr right = expr();
+				expr();
 				if ( lexer.token != Symbol.SEMICOLON )
 					signalError.showError("';' expected", true);
 				else
 					lexer.nextToken();
-				expr = new CompositeExpr(expr, Symbol.ASSIGN, right);
-			}
+			} // StatementExpr que herda de statement
 		}
-		return expr;
+		return statement;
 	}
 
 	private ExprList realParameters() {
