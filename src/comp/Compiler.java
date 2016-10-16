@@ -245,20 +245,34 @@ public class Compiler {
 		return currentMethod;
 	}
 
-	private void localDec() {
+	private LocalVariableList localDec() {
 		// LocalDec ::= Type IdList ";"
 
+		LocalVariableList variableList = new LocalVariableList();
+		
 		Type type = type();
 		if ( lexer.token != Symbol.IDENT ) signalError.showError("Identifier expected");
 		Variable v = new Variable(lexer.getStringValue(), type);
+		
+		// Adiciona a tabela local e a lista de variaveis
+		symbolTable.putInLocal(lexer.getStringValue(), v);
+		variableList.addElement(v);
+		
 		lexer.nextToken();
 		while (lexer.token == Symbol.COMMA) {
 			lexer.nextToken();
 			if ( lexer.token != Symbol.IDENT )
 				signalError.showError("Identifier expected");
 			v = new Variable(lexer.getStringValue(), type);
+			
+			// Adiciona a tabela local e a lista de variaveis
+			symbolTable.putInLocal(lexer.getStringValue(), v);
+			variableList.addElement(v);
+			
 			lexer.nextToken();
 		}
+		
+		return variableList;
 	}
 
 	private ParamList formalParamDec() {
@@ -311,9 +325,7 @@ public class Compiler {
 			result = symbolTable.getInGlobal(className);
 			
 			if(result == null) {
-				//signalError.showError("Unknown class: " + className);
-				System.out.println("Type unexpected"); // REMOVER
-				result = Type.undefinedType; // REMOVER
+				signalError.showError("Identifier expected");
 			}
 			
 			break;
@@ -367,7 +379,7 @@ public class Compiler {
 		case INT:
 		case BOOLEAN:
 		case STRING:
-			assignExprLocalDec();
+			statement = assignExprLocalDec();
 			break;
 		case ASSERT:
 			statement = assertStatement();
@@ -452,21 +464,23 @@ public class Compiler {
 			 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ] | LocalDec 
 			 * LocalDec ::= Type IdList ``;''
 			 */
-			localDec(); // retornar LocalVariableList que herda de statement
+			statement = localDec(); // retornar LocalVariableList que herda de statement
 		}
 		else {
 			/*
 			 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ]
 			 */
-			expr();
+			Expr left = expr();
+			Expr right = null;
 			if ( lexer.token == Symbol.ASSIGN ) {
 				lexer.nextToken();
-				expr();
+				right = expr();
 				if ( lexer.token != Symbol.SEMICOLON )
 					signalError.showError("';' expected", true);
 				else
 					lexer.nextToken();
 			} // StatementExpr que herda de statement
+			statement = new StatementExpr(left, right);
 		}
 		return statement;
 	}
@@ -558,7 +572,7 @@ public class Compiler {
 				Iterator<InstanceVariable> i = currentClass.getInstanceVariableList().elements();
 				while(i.hasNext()) {
 					InstanceVariable v = i.next();
-					if(v.getName() == name) {
+					if(v.getName().equals(name)) {
 						variable = v;
 					}
 				}
