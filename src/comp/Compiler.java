@@ -834,7 +834,10 @@ public class Compiler {
 			if ( lexer.token != Symbol.DOT ) {
 				// Id
 				// retorne um objeto da ASA que representa um identificador
-				return null;
+				Variable v = (Variable) symbolTable.getInLocal(firstId);
+				
+				VariableExpr variableExpr = new VariableExpr(v);
+				return variableExpr;
 			}
 			else { // Id "."
 				lexer.nextToken(); // coma o "."

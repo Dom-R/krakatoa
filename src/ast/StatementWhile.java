@@ -19,7 +19,7 @@ public class StatementWhile extends Statement {
 	@Override
 	public void genKra(PW pw) {
 		pw.printIdent("while ( ");
-		//expr.genKra(pw, false);
+		expr.genKra(pw, false);
 		pw.println(" )");
 		pw.add();
 		statement.genKra(pw);

@@ -26,7 +26,7 @@ public class StatementIf extends Statement {
 	@Override
 	public void genKra(PW pw) {
 		pw.printIdent("if ( ");
-		//expr.genKra(pw, false);
+		expr.genKra(pw, false);
 		pw.println(" )");
 		pw.add();
 		statementThen.genKra(pw);
