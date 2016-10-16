@@ -13,6 +13,12 @@ public class LiteralInt extends Expr {
         pw.printIdent("" + value);
     }
     
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+    	pw.print("" + value);
+	}
+    
     public Type getType() {
         return Type.intType;
     }

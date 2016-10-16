@@ -14,10 +14,11 @@ public class StatementExpr extends Statement {
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.printIdent("leftExpr");
+		pw.printIdent("");
+		leftExpr.genKra(pw, false);
 		if(rightExpr != null) {
 			pw.print(" = ");
-			pw.print("rightExpr");
+			rightExpr.genKra(pw, false);
 		}
 		pw.println(";");
 	}

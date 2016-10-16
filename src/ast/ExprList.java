@@ -26,7 +26,7 @@ public class ExprList {
 
         int size = exprList.size();
         for ( Expr e : exprList ) {
-        	//e.genKra(pw, false); //Remover comentário depois
+        	e.genKra(pw, false); //Remover comentário depois
             if ( --size > 0 )
                 pw.print(", ");
         }

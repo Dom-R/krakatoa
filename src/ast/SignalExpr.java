@@ -23,6 +23,12 @@ public class SignalExpr extends Expr {
 	public Type getType() {
        return expr.getType();
     }
+    
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
 
     private Expr expr;
     private Symbol oper;

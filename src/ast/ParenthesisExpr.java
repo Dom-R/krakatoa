@@ -16,5 +16,11 @@ public class ParenthesisExpr extends Expr {
         return expr.getType();
     }
     
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
+    
     private Expr expr;
 }

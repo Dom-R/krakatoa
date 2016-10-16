@@ -11,5 +11,9 @@ public class MessageSendToVariable extends MessageSend {
         
     }
 
-    
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
 }    

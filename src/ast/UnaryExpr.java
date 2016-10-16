@@ -28,6 +28,12 @@ public class UnaryExpr extends Expr {
 		}
 		expr.genC(pw, false);
 	}
+	
+	@Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public Type getType() {

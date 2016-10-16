@@ -10,4 +10,9 @@ public class MessageSendToSuper extends MessageSend {
         
     }
     
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
 }

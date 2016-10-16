@@ -10,6 +10,12 @@ public class LiteralBoolean extends Expr {
 	public void genC( PW pw, boolean putParenthesis ) {
        pw.print( value ? "1" : "0" );
     }
+    
+    @Override
+	public void genKra(PW pw, boolean putParenthesis) {
+		// TODO Auto-generated method stub
+		
+	}
 
     @Override
 	public Type getType() {
