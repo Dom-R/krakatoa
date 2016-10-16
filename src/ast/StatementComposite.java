@@ -16,11 +16,11 @@ public class StatementComposite extends Statement {
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.println("{");
+		pw.printlnIdent("{");
 		pw.add();
 		statementList.genKra(pw);
 		pw.sub();
-		pw.println("}");
+		pw.printlnIdent("}");
 	}
 
 	private StatementList statementList;

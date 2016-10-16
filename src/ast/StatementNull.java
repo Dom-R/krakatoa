@@ -6,11 +6,11 @@ public class StatementNull extends Statement {
 	
 	@Override
 	public void genC(PW pw) {
-		pw.printIdent(";");
+		pw.println(";");
 	}
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.printlnIdent(";");
+		pw.println(";");
 	}
 }

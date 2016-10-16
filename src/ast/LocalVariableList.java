@@ -30,8 +30,17 @@ public class LocalVariableList extends Statement {
 
 	@Override
 	public void genKra(PW pw) {
+		pw.printIdent(localList.get(0).getType().getKraname() + " ");
 		// TODO Auto-generated method stub
-		
+		Iterator<Variable> iter = elements();
+		while(iter.hasNext()) {
+			Variable v = iter.next();
+			pw.print(v.getName());
+			if(iter.hasNext()) {
+				pw.print(", ");
+			}
+		}
+		//pw.print(";");
 	}
 
 }
