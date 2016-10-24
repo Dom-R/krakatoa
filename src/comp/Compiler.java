@@ -779,6 +779,7 @@ public class Compiler {
 			KraClass classObj = symbolTable.getInGlobal(className);
 			if( classObj == null ) {
 				// Faz algo que não sabemos
+				signalError.showError("Unknown class");
 			}
 
 			lexer.nextToken();
@@ -790,7 +791,8 @@ public class Compiler {
 			 * return an object representing the creation of an object
 			 */
 			// Criar e retornar um literalClass?
-			return null;
+			LiteralClass literalClass = new LiteralClass(classObj);
+			return literalClass;
 			/*
           	 * PrimaryExpr ::= "super" "." Id "(" [ ExpressionList ] ")"  | 
           	 *                 Id  |
@@ -817,9 +819,35 @@ public class Compiler {
 			 * para fazer as conferências semânticas, procure por 'messageName'
 			 * na superclasse/superclasse da superclasse etc
 			 */
+			KraClass pointedClass = currentClass;
+			
+			Method method = null;
+			do {
+				KraClass superClass = pointedClass.getSuperclass();
+				if( superClass != null) {
+					MethodList publicMethod = superClass.getPublicMethodList();
+					Iterator<Method> iterator = publicMethod.elements();
+					while(iterator.hasNext()) {
+						Method tempMethod = iterator.next();
+						if(tempMethod.getName().equals(messageName)) {
+							
+							// TODO: verifica se parametros sao iguais ao do metodo
+							
+							method = tempMethod;
+							break;
+						}
+					}
+				} else {
+					signalError.showError("Method not found in Superclasses");
+				}
+				pointedClass = superClass;
+			} while(method == null);
+			
 			lexer.nextToken();
 			exprList = realParameters();
-			break;
+			
+			MessageSendToSuper messageSendToSuper = new MessageSendToSuper(method, exprList);
+			return messageSendToSuper;
 		case IDENT:
 			/*
           	 * PrimaryExpr ::=  
@@ -857,6 +885,8 @@ public class Compiler {
 						 * Contudo, se variáveis estáticas não estiver nas especificações,
 						 * sinalize um erro neste ponto.
 						 */
+						signalError.showError("Static method using a static variable is not supported");
+						
 						lexer.nextToken();
 						if ( lexer.token != Symbol.IDENT )
 							signalError.showError("Identifier expected");
@@ -872,9 +902,46 @@ public class Compiler {
 						 * para fazer as conferências semânticas, procure por
 						 * método 'ident' na classe de 'firstId'
 						 */
+						
+						// firstId = Classe 
+						// id = method
+						Variable variableClass = symbolTable.getInLocal(firstId);
+						if( variableClass == null ) {
+							// Faz algo que não sabemos
+							signalError.showError("Unknown variable");
+						}
+						
+						KraClass pointedClass2 = (KraClass) variableClass.getType();
+						
+						// TODO: verificar se pointedClass é realmente uma classe, pois ele poderia ser um int, boolean, string
+						
+						Method method2 = null;
+						do {
+							if( pointedClass2 != null) {
+								MethodList publicMethod = pointedClass2.getPublicMethodList();
+								Iterator<Method> iterator = publicMethod.elements();
+								while(iterator.hasNext()) {
+									Method tempMethod = iterator.next();
+									if(tempMethod.getName().equals(id)) {
+										
+										// TODO: verifica se parametros sao iguais ao do metodo
+										
+										method2 = tempMethod;
+										break;
+									}
+								}
+							} else {
+								signalError.showError("Method not found in Superclasses");
+							}
+							pointedClass2 = pointedClass2.getSuperclass();
+						} while(method2 == null);
+						
+						MessageSendToVariable messageSendToVariable = new MessageSendToVariable(variableClass, method2, exprList);
+						return messageSendToVariable;
 					}
 					else {
 						// retorne o objeto da ASA que representa Id "." Id
+						signalError.showError("Static variable is not supported");
 					}
 				}
 			}
@@ -893,7 +960,7 @@ public class Compiler {
 				// only 'this'
 				// retorne um objeto da ASA que representa 'this'
 				// confira se não estamos em um método estático
-				return null;
+				return null; // TODO: Descobrir o que retornar?
 			}
 			else {
 				lexer.nextToken();
@@ -909,9 +976,38 @@ public class Compiler {
 					 * 'ident' e que pode tomar os parâmetros de ExpressionList
 					 */
 					exprList = this.realParameters();
+					
+					KraClass pointedClass3 = currentClass;
+					
+					Method method3 = null;
+					do {
+						KraClass superClass = pointedClass3.getSuperclass();
+						if( superClass != null) {
+							MethodList publicMethod = superClass.getPublicMethodList();
+							Iterator<Method> iterator = publicMethod.elements();
+							while(iterator.hasNext()) {
+								Method tempMethod = iterator.next();
+								if(tempMethod.getName().equals(id)) {
+									
+									// TODO: verifica se parametros sao iguais ao do metodo
+									
+									method3 = tempMethod;
+									break;
+								}
+							}
+						} else {
+							signalError.showError("Method not found in Superclasses");
+						}
+						pointedClass3 = superClass;
+					} while(method3 == null);
+					
+					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(method3, exprList);
+					return messageSendToSelf;
 				}
 				else if ( lexer.token == Symbol.DOT ) {
 					// "this" "." Id "." Id "(" [ ExpressionList ] ")"
+					signalError.showError("Static method using a static variable is not supported");
+					
 					lexer.nextToken();
 					if ( lexer.token != Symbol.IDENT )
 						signalError.showError("Identifier expected");
@@ -924,6 +1020,7 @@ public class Compiler {
 					 * confira se a classe corrente realmente possui uma
 					 * variável de instância 'ident'
 					 */
+					signalError.showError("Static variable is not supported");
 					return null;
 				}
 			}
