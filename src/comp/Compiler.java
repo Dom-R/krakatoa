@@ -176,6 +176,7 @@ public class Compiler {
 			String name = lexer.getStringValue();
 			lexer.nextToken();
 			if ( lexer.token == Symbol.LEFTPAR ) {
+				System.out.println("Metodo: " + name);
 				if(qualifier == Symbol.PRIVATE)
 					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
 				else
@@ -298,6 +299,10 @@ public class Compiler {
 		lexer.nextToken();
 		
 		Parameter parameter = new Parameter(name, type);
+		
+		// Adiciona o parametro a lista local de variaveis e parametros
+		symbolTable.putInLocal(name, parameter);
+		
 		return parameter;
 	}
 
@@ -779,7 +784,7 @@ public class Compiler {
 			KraClass classObj = symbolTable.getInGlobal(className);
 			if( classObj == null ) {
 				// Faz algo que não sabemos
-				signalError.showError("Unknown class");
+				signalError.showError("Class '" + className + "' was not found");
 			}
 
 			lexer.nextToken();
@@ -821,6 +826,10 @@ public class Compiler {
 			 */
 			KraClass pointedClass = currentClass;
 			
+			if(pointedClass.getSuperclass() == null) {
+				signalError.showError("'super' used in class '" + currentClass.getName() + "' that does not have a superclass");
+			}
+			
 			Method method = null;
 			do {
 				KraClass superClass = pointedClass.getSuperclass();
@@ -838,7 +847,7 @@ public class Compiler {
 						}
 					}
 				} else {
-					signalError.showError("Method not found in Superclasses");
+					signalError.showError("Method '" + messageName + "' was not found in superclass '" + currentClass.getName() + "' or its superclasses");
 				}
 				pointedClass = superClass;
 			} while(method == null);
@@ -863,6 +872,10 @@ public class Compiler {
 				// Id
 				// retorne um objeto da ASA que representa um identificador
 				Variable v = (Variable) symbolTable.getInLocal(firstId);
+				
+				if(v == null) {
+					System.out.println("Variavel Null");
+				}
 				
 				VariableExpr variableExpr = new VariableExpr(v);
 				return variableExpr;
@@ -905,17 +918,18 @@ public class Compiler {
 						
 						// firstId = Classe 
 						// id = method
-						Variable variableClass = symbolTable.getInLocal(firstId);
-						if( variableClass == null ) {
+						Variable variable = symbolTable.getInLocal(firstId);
+						if( variable == null ) {
 							// Faz algo que não sabemos
 							signalError.showError("Unknown variable");
 						}
 						
-						KraClass pointedClass2 = (KraClass) variableClass.getType();
+						KraClass variableClass = (KraClass) variable.getType();
 						
-						// TODO: verificar se pointedClass é realmente uma classe, pois ele poderia ser um int, boolean, string
+						// TODO: verificar se initialClass é realmente uma classe, pois ele poderia ser um int, boolean, string
 						
 						Method method2 = null;
+						KraClass pointedClass2 = variableClass;
 						do {
 							if( pointedClass2 != null) {
 								MethodList publicMethod = pointedClass2.getPublicMethodList();
@@ -931,12 +945,12 @@ public class Compiler {
 									}
 								}
 							} else {
-								signalError.showError("Method not found in Superclasses");
+								signalError.showError("Method '" + id + "' was not found in class '" + variableClass.getName() + "' or its superclasses");
 							}
 							pointedClass2 = pointedClass2.getSuperclass();
 						} while(method2 == null);
 						
-						MessageSendToVariable messageSendToVariable = new MessageSendToVariable(variableClass, method2, exprList);
+						MessageSendToVariable messageSendToVariable = new MessageSendToVariable(variable, method2, exprList);
 						return messageSendToVariable;
 					}
 					else {
@@ -983,10 +997,16 @@ public class Compiler {
 					do {
 						KraClass superClass = pointedClass3.getSuperclass();
 						if( superClass != null) {
+							
+							// Metodos privados
+							// TODO: Implementar checagem de metodos privados em this.id()
+							
+							// Metodos publicos
 							MethodList publicMethod = superClass.getPublicMethodList();
 							Iterator<Method> iterator = publicMethod.elements();
 							while(iterator.hasNext()) {
 								Method tempMethod = iterator.next();
+								System.out.println("Metodos publicos: " + tempMethod.getName());
 								if(tempMethod.getName().equals(id)) {
 									
 									// TODO: verifica se parametros sao iguais ao do metodo
@@ -996,7 +1016,7 @@ public class Compiler {
 								}
 							}
 						} else {
-							signalError.showError("Method not found in Superclasses");
+							signalError.showError("Method '" + id + "' was not found in class '" + currentClass.getName() + "' or its superclasses");
 						}
 						pointedClass3 = superClass;
 					} while(method3 == null);
@@ -1020,8 +1040,14 @@ public class Compiler {
 					 * confira se a classe corrente realmente possui uma
 					 * variável de instância 'ident'
 					 */
-					signalError.showError("Static variable is not supported");
-					return null;
+					Variable v = (Variable) symbolTable.getInLocal(id);
+					
+					if(v == null) {
+						System.out.println("Variavel Null");
+					}
+					
+					VariableExpr variableExpr = new VariableExpr(v);
+					return variableExpr;
 				}
 			}
 			break;
