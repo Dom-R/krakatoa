@@ -128,6 +128,7 @@ public class Compiler {
 			signalError.show(ErrorSignaller.ident_expected);
 		
 		String className = lexer.getStringValue();
+		System.out.println("Current Class: " + className);
 		currentClass = new KraClass(className);
 		symbolTable.putInGlobal(className, currentClass); //Instanciar objeto da classe fora do symboltable e inserir ela pelo symboltable. Alterar um dos objetos altera o outro?
 		
@@ -176,7 +177,7 @@ public class Compiler {
 			String name = lexer.getStringValue();
 			lexer.nextToken();
 			if ( lexer.token == Symbol.LEFTPAR ) {
-				System.out.println("Metodo: " + name);
+				System.out.println("Metodo: " + qualifier.toString() + " " + name);
 				if(qualifier == Symbol.PRIVATE)
 					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
 				else
@@ -928,7 +929,15 @@ public class Compiler {
 						
 						// TODO: verificar se initialClass é realmente uma classe, pois ele poderia ser um int, boolean, string
 						
+
 						Method method2 = null;
+						
+						// Metodo corrente
+						if( variableClass == currentClass && currentMethod.getName().equals(id)) {
+							System.out.println("Method calling itself with a class variable!");
+							method2 = currentMethod;
+						}
+						
 						KraClass pointedClass2 = variableClass;
 						do {
 							if( pointedClass2 != null) {
@@ -994,16 +1003,33 @@ public class Compiler {
 					KraClass pointedClass3 = currentClass;
 					
 					Method method3 = null;
+					
+					// Metodo corrente
+					if(currentMethod.getName().equals(id)) {
+						method3 = currentMethod;
+					}
+					
 					do {
-						KraClass superClass = pointedClass3.getSuperclass();
-						if( superClass != null) {
+						if( pointedClass3 != null) {
 							
 							// Metodos privados
-							// TODO: Implementar checagem de metodos privados em this.id()
+							MethodList privateMethod = pointedClass3.getPrivateMethodList();
+							Iterator<Method> iterator = privateMethod.elements();
+							while(iterator.hasNext()) {
+								Method tempMethod = iterator.next();
+								System.out.println("Metodos privados: " + tempMethod.getName());
+								if(tempMethod.getName().equals(id)) {
+									
+									// TODO: verifica se parametros sao iguais ao do metodo
+									
+									method3 = tempMethod;
+									break;
+								}
+							}
 							
 							// Metodos publicos
-							MethodList publicMethod = superClass.getPublicMethodList();
-							Iterator<Method> iterator = publicMethod.elements();
+							MethodList publicMethod = pointedClass3.getPublicMethodList();
+							iterator = publicMethod.elements();
 							while(iterator.hasNext()) {
 								Method tempMethod = iterator.next();
 								System.out.println("Metodos publicos: " + tempMethod.getName());
@@ -1018,7 +1044,7 @@ public class Compiler {
 						} else {
 							signalError.showError("Method '" + id + "' was not found in class '" + currentClass.getName() + "' or its superclasses");
 						}
-						pointedClass3 = superClass;
+						pointedClass3 = pointedClass3.getSuperclass();
 					} while(method3 == null);
 					
 					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(method3, exprList);
