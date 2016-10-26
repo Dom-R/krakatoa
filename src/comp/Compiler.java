@@ -237,8 +237,13 @@ public class Compiler {
 
 		lexer.nextToken();
 		StatementList statementList = statementList();
+		
+		// Verificacao se metodo corrente tem return
+		if(type != Type.voidType && currentMethod.getReturn() == false ) {
+			signalError.showError("Missing 'return' statement in method '" + currentMethod.getName() + "'");
+		}
+		
 		if ( lexer.token != Symbol.RIGHTCURBRACKET ) signalError.showError("} expected");
-
 		lexer.nextToken();
 		
 		currentMethod.setParamList(paramList);
