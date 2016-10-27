@@ -177,6 +177,12 @@ public class Compiler {
 			String name = lexer.getStringValue();
 			lexer.nextToken();
 			if ( lexer.token == Symbol.LEFTPAR ) {
+				
+				// Limpa variaveis locais
+				symbolTable.removeLocalIdent();
+				
+				// TODO: Verificar redeclaração de metodo
+				
 				System.out.println("Metodo: " + qualifier.toString() + " " + name);
 				if(qualifier == Symbol.PRIVATE)
 					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
@@ -187,6 +193,9 @@ public class Compiler {
 			else {
 				ArrayList<InstanceVariable> arrayInstanceVariable = instanceVarDec(t, name);
 				for( InstanceVariable i : arrayInstanceVariable ) {
+					
+					// TODO: Verificar redeclaração de variaveis de instancia
+					
 					//System.out.println("Debug: " + i.getType() + " " + i.getName());
 					currentClass.addInstanceVariable(i);
 				}
@@ -258,7 +267,16 @@ public class Compiler {
 		LocalVariableList variableList = new LocalVariableList();
 		
 		Type type = type();
+		
+		// TODO: Verificar se tipo eh valido
+		
 		if ( lexer.token != Symbol.IDENT ) signalError.showError("Identifier expected");
+		
+		// Valida se variavel ja nao foi declarada
+		if(symbolTable.getInLocal(lexer.getStringValue()) != null) {
+			signalError.showError("Variable '" + lexer.getStringValue() + "' is being redeclared");
+		}
+		
 		Variable v = new Variable(lexer.getStringValue(), type);
 		
 		// Adiciona a tabela local e a lista de variaveis
@@ -270,6 +288,12 @@ public class Compiler {
 			lexer.nextToken();
 			if ( lexer.token != Symbol.IDENT )
 				signalError.showError("Identifier expected");
+			
+			// Valida se variavel ja nao foi declarada
+			if(symbolTable.getInLocal(lexer.getStringValue()) != null) {
+				signalError.showError("Variable '" + lexer.getStringValue() + "' is being redeclared");
+			}
+			
 			v = new Variable(lexer.getStringValue(), type);
 			
 			// Adiciona a tabela local e a lista de variaveis
@@ -278,6 +302,10 @@ public class Compiler {
 			
 			lexer.nextToken();
 		}
+		
+		if ( lexer.token != Symbol.SEMICOLON )
+			signalError.showError("Missing ';'", true);
+		lexer.nextToken();
 		
 		return variableList;
 	}
@@ -545,10 +573,16 @@ public class Compiler {
 
 		lexer.nextToken();
 		Expr expr = expr();
+		
+		// TODO: Verificar tipo de expr e verificar se o tipo de expr eh igual ao do tipo do metodo, senao da erro
+		// Arrumar isso abaixo
+		/*if(expr.getType() != currentMethod.getType()) {
+			signalError.showError("Illegal 'return' statement. Method returns '" + currentMethod.getType().getName() + "'");
+		}*/
+		
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
-		
 		// Seta que metodo tem return
 		currentMethod.hasReturn();
 		
@@ -879,8 +913,10 @@ public class Compiler {
 				// retorne um objeto da ASA que representa um identificador
 				Variable v = (Variable) symbolTable.getInLocal(firstId);
 				
+				// TODO: Arrumar
 				if(v == null) {
 					System.out.println("Variavel Null");
+					//signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 				
 				VariableExpr variableExpr = new VariableExpr(v);
