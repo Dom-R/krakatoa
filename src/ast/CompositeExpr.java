@@ -65,14 +65,14 @@ public class CompositeExpr extends Expr {
 		// TODO Auto-generated method stub
 		if ( putParenthesis )
 		      pw.print("(");
-		left.genC(pw, true);
+		left.genKra(pw, true);
 		String strSymbol = arrayOper.get(oper);
 		if ( strSymbol == null ) {
 			pw.println("internal error in CompositeExpr::genC");
 		}
 		else
 		    pw.print(" " + strSymbol + " ");
-		right.genC(pw, true);
+		right.genKra(pw, true);
 		if ( putParenthesis )
 		  pw.print(")");
 	}

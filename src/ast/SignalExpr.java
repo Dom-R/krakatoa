@@ -27,7 +27,12 @@ public class SignalExpr extends Expr {
     @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
-		
+    	if ( putParenthesis )
+            pw.print("(");
+         pw.print( oper == Symbol.PLUS ? "+" : "-" );
+         expr.genKra(pw, true);
+         if ( putParenthesis )
+            pw.print(")");
 	}
 
     private Expr expr;
