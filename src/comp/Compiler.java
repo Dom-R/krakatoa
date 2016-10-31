@@ -979,6 +979,9 @@ public class Compiler {
 						}
 						
 						// TODO: verificar se initialClass é realmente uma classe, pois ele poderia ser um int, boolean, string
+						if(variable.getType() == Type.booleanType || variable.getType() == Type.intType || variable.getType() == Type.stringType || variable.getType() == Type.voidType ) {
+							signalError.showError("Message send to a non-object receiver");
+						}
 						
 						KraClass variableClass = (KraClass) variable.getType();
 
