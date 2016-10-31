@@ -238,6 +238,11 @@ public class Compiler {
 		 * MethodDec ::= Qualifier Return Id "("[ FormalParamDec ] ")" "{"
 		 *                StatementList "}"
 		 */
+		
+		// Verificacao se metodo run da classe Program eh privado
+		if(currentClass.getName().equals("Program") && name.equals("run") && qualifier == Symbol.PRIVATE) {
+			signalError.showError("Method 'run' of class 'Program' cannot be private");
+		}
 
 		// Verificacao se metodo esta sendo redeclarado
 		Iterator<Method> privateMethodIterator = currentClass.getPrivateMethodList().elements();
@@ -270,6 +275,11 @@ public class Compiler {
 		if ( lexer.token != Symbol.RIGHTPAR ) paramList = formalParamDec();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 
+		// Verificacao se metodo run da classe Program esta recebendo parametros
+		if(currentClass.getName().equals("Program") && name.equals("run") && paramList != null) {
+			signalError.showError("Method 'run' of class 'Program' cannot take parameters");
+		}
+		
 		lexer.nextToken();
 		if ( lexer.token != Symbol.LEFTCURBRACKET ) signalError.showError("{ expected");
 
