@@ -16,6 +16,7 @@ public class Method {
 	  this.paramList = null;
       this.statementList = null;
       this.hasReturn = false;
+      this.whileCounter = 0;
    }
    
    public void setParamList(ParamList paramList) {
@@ -26,6 +27,9 @@ public class Method {
 	   this.statementList = statementList;
    }
    
+   /*****************************/
+   /* Validacao para return */
+   /*****************************/
    public void hasReturn() {
 	   hasReturn = true;
    }
@@ -33,6 +37,32 @@ public class Method {
    public boolean getReturn() {
 	   return hasReturn;
    }
+   /*****************************/
+   /* Fim validacao para return */
+   /*****************************/
+   
+   /****************************/
+   /* Validacao para while */
+   /****************************/
+   public void addWhile() {
+	   whileCounter++;
+   }
+   
+   // Retorna true se pode usar break, false caso nao possa pq esta fora de while
+   public boolean canBreak() {
+	   if(whileCounter > 0) {
+		   return true;
+	   } else {
+		   return false;
+	   }
+   }
+   
+   public void addBreak() {
+	   whileCounter--;
+   }
+   /****************************/
+   /* Fim validacao para While */
+   /****************************/
    
    public void genKra(PW pw) {
 	   pw.printIdent(qualifier + " " + type.getKraname() + " " + name + "(");
@@ -85,5 +115,6 @@ public class Method {
    private ParamList paramList;
    private StatementList statementList;
    private boolean hasReturn;
+   private int whileCounter;
    
 }

@@ -549,6 +549,10 @@ public class Compiler {
 		Expr expr = expr();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 		lexer.nextToken();
+		
+		// Validacao de break
+		currentMethod.addWhile();
+		
 		Statement statement = statement();
 		
 		StatementWhile statementWhile = new StatementWhile(expr, statement);
@@ -693,6 +697,14 @@ public class Compiler {
 		lexer.nextToken();
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
+		
+		// Validacao de break fora de while
+		if(currentMethod.canBreak()) {
+			currentMethod.addBreak();
+		} else {
+			signalError.showError("'break' statement found outside a 'while' statement");
+		}
+		
 		lexer.nextToken();
 		
 		return new StatementBreak();
