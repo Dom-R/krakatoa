@@ -206,6 +206,22 @@ public class Compiler {
 				}
 			}
 		}
+		
+		// Verificacao se classe Program possui metodo run
+		// TODO: Arrumar
+		/*if(className.equals("Program")) {
+			boolean hasRun = false;
+			Iterator<Method> publicMethodIterator = currentClass.getPublicMethodList().elements();
+			while(publicMethodIterator.hasNext()) {
+				if(publicMethodIterator.next().getName().equals("run")) {
+					hasRun = true;
+				}
+			}
+			if(!hasRun) {
+				signalError.showError("Method 'run' was not found in class 'Program'");
+			}
+		}*/
+		
 		if ( lexer.token != Symbol.RIGHTCURBRACKET )
 			signalError.showError("public/private or \"}\" expected");
 		lexer.nextToken();
@@ -713,6 +729,21 @@ public class Compiler {
 		ExprList exprList = exprList();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 		lexer.nextToken();
+		
+		// Verificacao que impede write de expressoes com tipo booleano ou de objeto
+		// TODO: Arrumar
+		/*Iterator<Expr> iter = exprList.getExprListIterator();
+		while(iter.hasNext()) {
+			Type type = iter.next().getType();
+			if( type == Type.booleanType) {
+				signalError.showError("Command 'write' does not accept 'boolean' expressions");
+			}
+			
+			if( type instanceof KraClass ) {
+				signalError.showError("Command 'write' does not accept objects");
+			}
+		}*/
+		
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
 		lexer.nextToken();
