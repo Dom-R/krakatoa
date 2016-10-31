@@ -139,6 +139,11 @@ public class Compiler {
 				signalError.show(ErrorSignaller.ident_expected);
 			String superclassName = lexer.getStringValue();
 			
+			// Validacao se classe esta se extendendo
+			if(className.equals(superclassName)) {
+				signalError.showError("Class '" + className + "' is inheriting from itself");
+			}
+			
 			// Inserir verificacao caso superclasse nao esteja no symboltable
 			KraClass superclass = symbolTable.getInGlobal(superclassName);
 			
@@ -639,7 +644,12 @@ public class Compiler {
 			
 			// Verificacao para impedir boolean no read
 			if(variable.getType() == Type.booleanType) {
-				signalError.showError("z");
+				signalError.showError("Command 'read' does not accept 'boolean' variables");
+			}
+			
+			// Verificacao para impedir variaveis que nao sao de tipo int ou string
+			if(variable.getType() != Type.intType && variable.getType() != Type.stringType ) {
+				signalError.showError("'int' or 'String' expression expected");
 			}
 			
 			variableExprList.add(new VariableExpr(variable));
