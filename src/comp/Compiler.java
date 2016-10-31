@@ -517,6 +517,9 @@ public class Compiler {
 		case WHILE:
 			statement = whileStatement();
 			break;
+		case DO:
+			statement = doWhileStatement();
+			break;
 		case SEMICOLON:
 			statement = nullStatement();
 			break;
@@ -614,6 +617,12 @@ public class Compiler {
 		if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
 		lexer.nextToken();
 		Expr expr = expr();
+		
+		// Validacao se expressao eh booleana
+		if(expr.getType() != Type.booleanType) {
+			signalError.showError("non-boolean expression in 'while' command");
+		}
+		
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 		lexer.nextToken();
 		
@@ -624,6 +633,39 @@ public class Compiler {
 		
 		StatementWhile statementWhile = new StatementWhile(expr, statement);
 		return statementWhile;
+	}
+	
+	private StatementDoWhile doWhileStatement() {
+		
+		lexer.nextToken();
+		if ( lexer.token != Symbol.LEFTCURBRACKET ) signalError.showError("'{' expected after 'do'");
+		lexer.nextToken();
+		
+		StatementList statementList = new StatementList();
+		// statements always begin with an identifier, if, read, write, ...
+		while (lexer.token != Symbol.RIGHTCURBRACKET)
+			statementList.addElement(statement());
+		
+		if ( lexer.token != Symbol.RIGHTCURBRACKET ) signalError.showError("} expected");
+		lexer.nextToken();
+		if ( lexer.token != Symbol.WHILE ) signalError.showError("'while' expected");
+		lexer.nextToken();
+		if ( lexer.token != Symbol.LEFTPAR ) signalError.showError("( expected");
+		lexer.nextToken();
+		Expr expr = expr();
+		
+		// Validacao se expressao eh booleana
+		if(expr.getType() != Type.booleanType) {
+			signalError.showError("boolean expression expected in a do-while statement");
+		}
+		
+		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
+		lexer.nextToken();
+		if ( lexer.token != Symbol.SEMICOLON ) signalError.show(ErrorSignaller.semicolon_expected);
+		lexer.nextToken();
+		
+		StatementDoWhile statementDoWhile = new StatementDoWhile(expr, statementList);
+		return statementDoWhile;
 	}
 
 	private StatementIf ifStatement() {
