@@ -128,7 +128,7 @@ public class Compiler {
 			signalError.show(ErrorSignaller.ident_expected);
 		
 		String className = lexer.getStringValue();
-		System.out.println("Current Class: " + className);
+		//System.out.println("Current Class: " + className);
 		currentClass = new KraClass(className);
 		symbolTable.putInGlobal(className, currentClass); //Instanciar objeto da classe fora do symboltable e inserir ela pelo symboltable. Alterar um dos objetos altera o outro?
 		
@@ -183,7 +183,7 @@ public class Compiler {
 				
 				// TODO: Verificar redeclaração de metodo
 				
-				System.out.println("Metodo: " + qualifier.toString() + " " + name);
+				//System.out.println("Metodo: " + qualifier.toString() + " " + name);
 				if(qualifier == Symbol.PRIVATE)
 					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
 				else
@@ -244,6 +244,11 @@ public class Compiler {
 		lexer.nextToken();
 		if ( lexer.token != Symbol.LEFTCURBRACKET ) signalError.showError("{ expected");
 
+		// Validacao que metodo run da classe Program tem que retornar obrigatoriamente void
+		if(currentClass.getName().equals("Program") && name.equals("run") && type != Type.voidType) {
+			signalError.showError("Method 'run' of class 'Program' with a return value type different from 'void'");
+		}
+		
 		lexer.nextToken();
 		StatementList statementList = statementList();
 		
@@ -364,6 +369,7 @@ public class Compiler {
 			result = symbolTable.getInGlobal(className);
 			
 			if(result == null) {
+				System.out.println("Type Class " + className + " not found");
 				signalError.showError("Identifier expected");
 			}
 			
@@ -626,6 +632,12 @@ public class Compiler {
 					variable = symbolTable.getInLocal(name);
 				}
 			}
+			
+			// Verificacao para impedir boolean no read
+			if(variable.getType() == Type.booleanType) {
+				signalError.showError("z");
+			}
+			
 			variableExprList.add(new VariableExpr(variable));
 			
 			lexer.nextToken();
@@ -915,7 +927,7 @@ public class Compiler {
 				
 				// TODO: Arrumar
 				if(v == null) {
-					System.out.println("Variavel Null");
+					System.out.println("Variavel Null: " + firstId);
 					//signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 				
@@ -966,16 +978,15 @@ public class Compiler {
 							signalError.showError("Unknown variable");
 						}
 						
-						KraClass variableClass = (KraClass) variable.getType();
-						
 						// TODO: verificar se initialClass é realmente uma classe, pois ele poderia ser um int, boolean, string
 						
+						KraClass variableClass = (KraClass) variable.getType();
 
 						Method method2 = null;
 						
 						// Metodo corrente
 						if( variableClass == currentClass && currentMethod.getName().equals(id)) {
-							System.out.println("Method calling itself with a class variable!");
+							//System.out.println("Method calling itself with a class variable!");
 							method2 = currentMethod;
 						}
 						
@@ -1058,7 +1069,7 @@ public class Compiler {
 							Iterator<Method> iterator = privateMethod.elements();
 							while(iterator.hasNext()) {
 								Method tempMethod = iterator.next();
-								System.out.println("Metodos privados: " + tempMethod.getName());
+								//System.out.println("Metodos privados: " + tempMethod.getName());
 								if(tempMethod.getName().equals(id)) {
 									
 									// TODO: verifica se parametros sao iguais ao do metodo
@@ -1073,7 +1084,7 @@ public class Compiler {
 							iterator = publicMethod.elements();
 							while(iterator.hasNext()) {
 								Method tempMethod = iterator.next();
-								System.out.println("Metodos publicos: " + tempMethod.getName());
+								//System.out.println("Metodos publicos: " + tempMethod.getName());
 								if(tempMethod.getName().equals(id)) {
 									
 									// TODO: verifica se parametros sao iguais ao do metodo
@@ -1110,7 +1121,7 @@ public class Compiler {
 					Variable v = (Variable) symbolTable.getInLocal(id);
 					
 					if(v == null) {
-						System.out.println("Variavel Null");
+						System.out.println("Variavel de Instancia Null: " + id);
 					}
 					
 					VariableExpr variableExpr = new VariableExpr(v);
