@@ -239,6 +239,22 @@ public class Compiler {
 		 *                StatementList "}"
 		 */
 
+		// Verificacao se metodo esta sendo redeclarado
+		Iterator<Method> privateMethodIterator = currentClass.getPrivateMethodList().elements();
+		while(privateMethodIterator.hasNext()) {
+			if(privateMethodIterator.next().getName().equals(name)) {
+				signalError.showError("Method '" + name + "' is being redefined");
+			}
+		}
+		
+		// Verificacao se metodo esta sendo redeclarado
+		Iterator<Method> publicMethodIterator = currentClass.getPublicMethodList().elements();
+		while(publicMethodIterator.hasNext()) {
+			if(publicMethodIterator.next().getName().equals(name)) {
+				signalError.showError("Method '" + name + "' is being redefined");
+			}
+		}
+		
 		currentMethod = new Method(name, type, qualifier);
 		
 		lexer.nextToken();
