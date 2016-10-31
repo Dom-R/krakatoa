@@ -255,6 +255,14 @@ public class Compiler {
 			}
 		}
 		
+		// Verificacao se metodo tem mesmo nome de uma variavel de instancia
+		Iterator<InstanceVariable> instanceVariableIterator = currentClass.getInstanceVariableList().elements();
+		while(instanceVariableIterator.hasNext()) {
+			if(instanceVariableIterator.next().getName().equals(name)) {
+				signalError.showError("Method '" + name + "' has name equal to an instance variable");
+			}
+		}
+		
 		currentMethod = new Method(name, type, qualifier);
 		
 		lexer.nextToken();
