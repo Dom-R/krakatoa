@@ -38,6 +38,18 @@ public class Compiler {
 			if ( lexer.token != Symbol.EOF ) {
 				signalError.showError("End of file expected");
 			}
+			
+			// Verificacao se ha uma classe chamada Program
+			boolean hasProgram = false;
+			Iterator<KraClass> iter = kraClassList.iterator();
+			while(iter.hasNext()) {
+				if(iter.next().getName().equals("Program")) {
+					hasProgram = true;
+				}
+			}
+			if(!hasProgram) {
+				signalError.showError("Source code without a class 'Program'");
+			}
 		}
 		catch( RuntimeException e) {
 			// if there was an exception, there is a compilation signalError
