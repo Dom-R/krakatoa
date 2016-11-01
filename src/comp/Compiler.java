@@ -644,13 +644,13 @@ public class Compiler {
 				/*if(left.getType() != right.getType()) {
 					signalError.showError("'" + left.getType().getName() + "' cannot be assigned to '" + left.getType().getName() + "'");
 				}*/
-				
-				if ( lexer.token != Symbol.SEMICOLON )
-					signalError.showError("';' expected", true);
-				else
-					lexer.nextToken();
 			} // StatementExpr que herda de statement
-
+			
+			if ( lexer.token != Symbol.SEMICOLON )
+				signalError.showError("';' expected", true);
+			else
+				lexer.nextToken();
+			
 			// Message Send para Statement
 			if(right == null && left instanceof MessageSend ) {
 				System.out.println("Message Send");
