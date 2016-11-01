@@ -21,7 +21,7 @@ public class StatementAssert extends Statement {
 	@Override
 	public void genKra(PW pw) {
 		pw.printIdent("if ( !( ");
-		//expr.genKra(pw, false);
+		expr.genKra(pw, false);
 		pw.println(" ) ) {");
 		pw.add();
 		pw.printlnIdent("System.out.println(\"" + message +  "\");");
