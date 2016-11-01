@@ -436,8 +436,8 @@ public class Compiler {
 			result = symbolTable.getInGlobal(className);
 			
 			if(result == null) {
-				System.out.println("Type Class " + className + " not found");
-				signalError.showError("Identifier expected");
+				signalError.showError("Type '" + className + "' was not found");
+				result = Type.undefinedType;
 			}
 			
 			break;
@@ -732,7 +732,7 @@ public class Compiler {
 				flagThis = true;
 			}
 			if ( lexer.token != Symbol.IDENT )
-				signalError.show(ErrorSignaller.ident_expected);
+				signalError.showError("Command 'read' expects a variable");
 
 			String name = lexer.getStringValue();
 			
@@ -890,6 +890,11 @@ public class Compiler {
 			
 			lexer.nextToken();
 			Expr right = term();
+			
+			if( (op == Symbol.MINUS || op == Symbol.PLUS) && ( ( left.getType() == Type.intType && right.getType() != Type.intType ) || ( left.getType() != Type.intType && right.getType() == Type.intType ) ) ) {
+				signalError.showError("operator '" + op.toString() + "' of 'int' expects an 'int' value");
+			}
+			
 			left = new CompositeExpr(left, op, right);
 		}
 		return left;
