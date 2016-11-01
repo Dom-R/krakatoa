@@ -303,6 +303,38 @@ public class Compiler {
 		if ( lexer.token != Symbol.RIGHTPAR ) paramList = formalParamDec();
 		if ( lexer.token != Symbol.RIGHTPAR ) signalError.showError(") expected");
 
+		
+		// Verifica se metodo esta sendo redeclarado com estrutura diferente de sua superclasse
+		if(currentClass.getSuperclass() != null) {
+			if(currentClass.getSuperclass().getPublicMethodList() != null) {
+				// Procura metodo publico com mesmo nome na superclasse
+				Iterator<Method> iter = currentClass.getSuperclass().getPublicMethodList().elements();
+				while(iter.hasNext()) {
+					Method tempMethod = iter.next();
+					if( tempMethod.getName().equals(name) ) {
+						
+						// verifica return type diferente
+						if(tempMethod.getType() != type) {
+							signalError.showError("Method '" + name + "' of subclass '" + currentClass.getName() + "' has a signature different from method inherited from superclass '" + currentClass.getSuperclass().getName() + "'");
+						}
+						
+						// verifica se parametros sao diferentes
+						if( ( paramList == null && tempMethod.getParamList() != null )
+								|| ( paramList != null && tempMethod.getParamList() == null )) {
+							signalError.showError("Method '" + name + "' of the subclass '" + currentClass.getName() + "' has a signature different from the same method of superclass '" + currentClass.getSuperclass().getName() + "'");
+						} else {
+							
+							// TODO: Implementar verificacao de tipos diferentes no parametro aqui
+							
+							
+						}
+						
+						
+					}
+				}
+			}
+		}
+		
 		// Verificacao se metodo run da classe Program esta recebendo parametros
 		if(currentClass.getName().equals("Program") && name.equals("run") && paramList != null) {
 			signalError.showError("Method 'run' of class 'Program' cannot take parameters");

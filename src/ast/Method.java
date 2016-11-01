@@ -23,6 +23,10 @@ public class Method {
 	   this.paramList = paramList;
    }
    
+   public ParamList getParamList() {
+	   return paramList;
+   }
+   
    public void setStatementList(StatementList statementList) {
 	   this.statementList = statementList;
    }
