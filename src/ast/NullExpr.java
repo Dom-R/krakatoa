@@ -7,13 +7,13 @@ public class NullExpr extends Expr {
    }
    
    public Type getType() {
-      //# corrija
-      return null;
+	  KraClass nullClass = new KraClass("Null");
+      return nullClass;
    }
    
    @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
-		
+		pw.print("null;");
 	}
 }

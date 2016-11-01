@@ -524,6 +524,9 @@ public class Compiler {
 		case BOOLEAN:
 		case STRING:
 			statement = assignExprLocalDec();
+				 MessageSendStatement message = (MessageSendStatement) statement;
+				 if(message.getType() != Type.voidType) {
+				 }
 			break;
 		case ASSERT:
 			statement = assertStatement();
@@ -623,6 +626,16 @@ public class Compiler {
 				lexer.nextToken();
 				right = expr();
 				
+				// Validacao quando right retorna void
+				if(right.getType() == Type.voidType) {
+					signalError.showError("Expression expected in the right-hand side of assignment");
+				}
+				
+				// Validacao para atribuicao de null
+				if(right instanceof NullExpr && ( left.getType() == Type.intType || left.getType() == Type.booleanType ) ) {
+					signalError.showError("Type error: 'null' cannot be assigned to a variable of a basic type");
+				}
+				
 				// Validacao inicial se as duas expr tem o mesmo tipo
 				// TODO: Arrumar
 				/*if(left.getType() != right.getType()) {
@@ -634,7 +647,11 @@ public class Compiler {
 				else
 					lexer.nextToken();
 			} // StatementExpr que herda de statement
-			statement = new StatementExpr(left, right);
+
+			// Message Send para Statement
+				System.out.println("Message Send");
+				statement = new MessageSendStatement((MessageSend) left);
+				statement = new StatementExpr(left, right);
 		}
 		return statement;
 	}
