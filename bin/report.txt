@@ -1,8 +1,8 @@
 Relatório do Compilador
 
-16 de um total de 145 erros que deveriam ser sinalizados não o foram (11%)
+14 de um total de 145 erros que deveriam ser sinalizados não o foram (9%)
 17 erros foram sinalizados na linha errada (11%)
-14 erros foram sinalizados em 73 arquivos sem erro (19%)
+17 erros foram sinalizados em 73 arquivos sem erro (23%)
 
 Erros que deveriam ser sinalizados mas não foram:
 
@@ -21,10 +21,6 @@ ER-SEM38.KRA, 20, Type error: type of the right-hand side of the assignment is n
 ER-SEM39.KRA, 16, Type error: type of the expression returned is not subclass of the method return type (comp.Compiler.returnStatement())
 
 ER-SEM40.KRA, 40, Type error: the type of the real parameter is not subclass of the type of the formal parameter (comp.Compiler.factor())
-
-ER-SEM44.KRA, 26, Command 'write' does not accept objects (comp.Compiler.writeStatement())
-
-ER-SEM47.KRA, 24, Method 'm' was not found in superclass 'B' or its superclasses (comp.Compiler.factor())
 
 ER-SEM51.KRA, 17, Method 'put' is being redefined in subclass 'B' with a signature different from the method of superclass 'A' (comp.Compiler.methodDec())
 
@@ -114,6 +110,8 @@ Erros que foram sinalizados mas não deveriam ter sido:
 
 OK-CHK06.KRA, 39, Static method using a static variable is not supported
 
+OK-CHK07.KRA, 75, Static method using a static variable is not supported
+
 OK-GER17.KRA, 11, public/private or "}" expected
 
 OK-GER18.KRA, 11, public/private or "}" expected
@@ -121,6 +119,8 @@ OK-GER18.KRA, 11, public/private or "}" expected
 OK-GER19.KRA, 11, public/private or "}" expected
 
 OK-GER20.KRA, 12, public/private or "}" expected
+
+OK-GER21.KRA, 19, Static method using a static variable is not supported
 
 OK-GER22.KRA, 14, public/private or "}" expected
 
@@ -137,6 +137,8 @@ OK-SEM18.KRA, 11, public/private or "}" expected
 OK-SEM19.KRA, 12, public/private or "}" expected
 
 OK-SEM20.KRA, 6, public/private or "}" expected
+
+OK-SIN14.KRA, 39, Static method using a static variable is not supported
 
 OK-SIN16.KRA, 26, Statement expected
 
@@ -345,6 +347,11 @@ The compiler message was: "Type error: 'null' cannot be assigned to a variable o
 The 'ce' message is:      "Type error: 'null' cannot be assigned to a variable of a basic type"
 
 
+ER-SEM44.KRA
+The compiler message was: "Command 'write' does not accept objects"
+The 'ce' message is:      "Command 'write' does not accept objects"
+
+
 ER-SEM45.KRA
 The compiler message was: "'int' or 'String' expression expected"
 The 'ce' message is:      "'int' or 'String' expression expected"
@@ -353,6 +360,11 @@ The 'ce' message is:      "'int' or 'String' expression expected"
 ER-SEM46.KRA
 The compiler message was: "'super' used in class 'Program' that does not have a superclass"
 The 'ce' message is:      "'super' used in class 'Program' that does not have a superclass"
+
+
+ER-SEM47.KRA
+The compiler message was: "Method 'm' was not found in superclass 'B' or its superclasses"
+The 'ce' message is:      "Method 'm' was not found in superclass 'B' or its superclasses"
 
 
 ER-SEM48.KRA

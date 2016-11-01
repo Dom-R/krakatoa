@@ -828,7 +828,7 @@ public class Compiler {
 				signalError.showError("'int' or 'String' expression expected");
 			}
 			
-			variableExprList.add(new VariableExpr(variable));
+			variableExprList.add(new VariableExpr(variable, flagThis));
 			
 			lexer.nextToken();
 			if ( lexer.token == Symbol.COMMA )
@@ -1175,7 +1175,7 @@ public class Compiler {
 					//signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 				
-				VariableExpr variableExpr = new VariableExpr(v);
+				VariableExpr variableExpr = new VariableExpr(v, false);
 				return variableExpr;
 			}
 			else { // Id "."
@@ -1367,9 +1367,17 @@ public class Compiler {
 					 */
 					
 					// TODO: Achar variavel de instancia
+					InstanceVariable variavel = null;
+					Iterator<InstanceVariable> iter = currentClass.getInstanceVariableList().elements();
+					while(iter.hasNext()) {
+						InstanceVariable tempVar = iter.next();
+						if(tempVar.getName().equals(id)) {
+							variavel = tempVar;
+						}
+					}
 					
-					//VariableExpr variableExpr = new VariableExpr(v);
-					return null;
+					VariableExpr variableExpr = new VariableExpr(variavel, true);
+					return variableExpr;
 				}
 			}
 			break;
