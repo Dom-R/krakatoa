@@ -590,6 +590,13 @@ public class Compiler {
 			if ( lexer.token == Symbol.ASSIGN ) {
 				lexer.nextToken();
 				right = expr();
+				
+				// Validacao inicial se as duas expr tem o mesmo tipo
+				// TODO: Arrumar
+				/*if(left.getType() != right.getType()) {
+					signalError.showError("'" + left.getType().getName() + "' cannot be assigned to '" + left.getType().getName() + "'");
+				}*/
+				
 				if ( lexer.token != Symbol.SEMICOLON )
 					signalError.showError("';' expected", true);
 				else
@@ -786,7 +793,7 @@ public class Compiler {
 		
 		// Verificacao que impede write de expressoes com tipo booleano ou de objeto
 		// TODO: Arrumar
-		/*Iterator<Expr> iter = exprList.getExprListIterator();
+		Iterator<Expr> iter = exprList.getExprListIterator();
 		while(iter.hasNext()) {
 			Type type = iter.next().getType();
 			if( type == Type.booleanType) {
@@ -796,7 +803,7 @@ public class Compiler {
 			if( type instanceof KraClass ) {
 				signalError.showError("Command 'write' does not accept objects");
 			}
-		}*/
+		}
 		
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
@@ -875,6 +882,12 @@ public class Compiler {
 		Expr left = term();
 		while ((op = lexer.token) == Symbol.MINUS || op == Symbol.PLUS
 				|| op == Symbol.OR) {
+			
+			// Validacao de + e - com boolean
+			if(left.getType() == Type.booleanType && (op == Symbol.MINUS || op == Symbol.PLUS)) {
+				signalError.showError("type boolean does not support operation '" + op.toString()  + "'");
+			}
+			
 			lexer.nextToken();
 			Expr right = term();
 			left = new CompositeExpr(left, op, right);
@@ -888,6 +901,12 @@ public class Compiler {
 		Expr left = signalFactor();
 		while ((op = lexer.token) == Symbol.DIV || op == Symbol.MULT
 				|| op == Symbol.AND) {
+			
+			// Validacao que && nao pode ser usado com int
+			if(left.getType() == Type.intType && op == Symbol.AND) {
+				signalError.showError("type 'int' does not support operator '&&'");
+			}
+			
 			lexer.nextToken();
 			Expr right = signalFactor();
 			left = new CompositeExpr(left, op, right);
@@ -899,7 +918,15 @@ public class Compiler {
 		Symbol op;
 		if ( (op = lexer.token) == Symbol.PLUS || op == Symbol.MINUS ) {
 			lexer.nextToken();
-			return new SignalExpr(op, factor());
+			
+			Expr factor = factor();
+			
+			// Validacao que sinal de positivo e negativo nao podem ser usados com booleano 
+			if(factor.getType() == Type.booleanType) {
+				signalError.showError("Operator '" + op.toString() + "' does not accepts 'boolean' expressions");
+			}
+			
+			return new SignalExpr(op, factor);
 		}
 		else
 			return factor();
@@ -961,6 +988,12 @@ public class Compiler {
 		case NOT:
 			lexer.nextToken();
 			anExpr = expr();
+			
+			// Validacao que qualquer outro tipo exceto booleano nao pode ser negado
+			if(anExpr.getType() != Type.booleanType) {
+				signalError.showError("Operator '!' does not accepts '" + anExpr.getType().getName() + "' values");
+			}
+			
 			return new UnaryExpr(anExpr, Symbol.NOT);
 			// ObjectCreation ::= "new" Id "(" ")"
 		case NEW:
