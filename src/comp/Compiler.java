@@ -524,9 +524,12 @@ public class Compiler {
 		case BOOLEAN:
 		case STRING:
 			statement = assignExprLocalDec();
+			if(statement instanceof MessageSendStatement) {
 				 MessageSendStatement message = (MessageSendStatement) statement;
 				 if(message.getType() != Type.voidType) {
+					 signalError.showError("Message send '" + message.getName() + "' returns a value that is not used");
 				 }
+			}
 			break;
 		case ASSERT:
 			statement = assertStatement();
@@ -649,9 +652,12 @@ public class Compiler {
 			} // StatementExpr que herda de statement
 
 			// Message Send para Statement
+			if(right == null && left instanceof MessageSend ) {
 				System.out.println("Message Send");
 				statement = new MessageSendStatement((MessageSend) left);
+			} else {
 				statement = new StatementExpr(left, right);
+			}
 		}
 		return statement;
 	}
