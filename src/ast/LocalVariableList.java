@@ -40,7 +40,7 @@ public class LocalVariableList extends Statement {
 				pw.print(", ");
 			}
 		}
-		//pw.print(";");
+		pw.println(";");
 	}
 
 }
