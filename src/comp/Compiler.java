@@ -639,6 +639,16 @@ public class Compiler {
 					signalError.showError("Type error: 'null' cannot be assigned to a variable of a basic type");
 				}
 				
+				// Validacao se lado esquerdo eh classe e lado direito eh tipo basico
+				if(left.getType() instanceof KraClass && !(right.getType() instanceof KraClass) ) {
+					signalError.showError("Type error: the type of the expression of the right-hand side is a basic type and the type of the variable of the left-hand side is a class");
+				}
+				
+				// Validacao se lado direito eh classe e lado esquerdo eh tipo basico
+				if( !(left.getType() instanceof KraClass) && right.getType() instanceof KraClass ) {
+					signalError.showError("Type error: type of the left-hand side of the assignment is a basic type and the type of the right-hand side is a class");
+				}
+				
 				// Validacao inicial se as duas expr tem o mesmo tipo
 				// TODO: Arrumar
 				/*if(left.getType() != right.getType()) {
@@ -1355,14 +1365,11 @@ public class Compiler {
 					 * confira se a classe corrente realmente possui uma
 					 * variável de instância 'ident'
 					 */
-					Variable v = (Variable) symbolTable.getInLocal(id);
 					
-					if(v == null) {
-						System.out.println("Variavel de Instancia Null: " + id);
-					}
+					// TODO: Achar variavel de instancia
 					
-					VariableExpr variableExpr = new VariableExpr(v);
-					return variableExpr;
+					//VariableExpr variableExpr = new VariableExpr(v);
+					return null;
 				}
 			}
 			break;

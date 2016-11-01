@@ -1,8 +1,8 @@
 Relatório do Compilador
 
-21 de um total de 144 erros que deveriam ser sinalizados não o foram (14%)
-16 erros foram sinalizados na linha errada (11%)
-16 erros foram sinalizados em 74 arquivos sem erro (21%)
+16 de um total de 145 erros que deveriam ser sinalizados não o foram (11%)
+17 erros foram sinalizados na linha errada (11%)
+14 erros foram sinalizados em 73 arquivos sem erro (19%)
 
 Erros que deveriam ser sinalizados mas não foram:
 
@@ -12,17 +12,9 @@ ER-SEM04.KRA, 11, Type error: value of the right-hand side is not subtype of the
 
 ER-SEM05.KRA, 10, 'int' cannot be assigned to 'boolean' (comp.Compiler.assignExprLocalDec())
 
-ER-SEM18.KRA, 9, Type 'k' was not found (comp.Compiler.localDec())
-
-ER-SEM19.KRA, 8, Type 'Program' was not found (comp.Compiler.localDec())
-
 ER-SEM28.KRA, 10, Variable 'i' is being redeclared (comp.Compiler.localDec())
 
-ER-SEM34.KRA, 19, Message send 'a.m()' returns a value that is not used (comp.Compiler.statement())
-
 ER-SEM35.KRA, 9, Illegal 'return' statement. Method returns 'void' (comp.Compiler.returnStatement())
-
-ER-SEM36.KRA, 20, Expression expected in the right-hand side of assignment (comp.Compiler.assignExprLocalDec())
 
 ER-SEM38.KRA, 20, Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side (comp.Compiler.assignExprLocalDec())
 
@@ -30,11 +22,9 @@ ER-SEM39.KRA, 16, Type error: type of the expression returned is not subclass of
 
 ER-SEM40.KRA, 40, Type error: the type of the real parameter is not subclass of the type of the formal parameter (comp.Compiler.factor())
 
-ER-SEM41.KRA, 14, Type error: the type of the expression of the right-hand side is a basic type and the type of the variable of the left-hand side is a class (comp.Compiler.assignExprLocalDec())
+ER-SEM44.KRA, 26, Command 'write' does not accept objects (comp.Compiler.writeStatement())
 
-ER-SEM42.KRA, 14, Type error: type of the left-hand side of the assignment is a basic type and the type of the right-hand side is a class (comp.Compiler.assignExprLocalDec())
-
-ER-SEM43.KRA, 10, Type error: 'null' cannot be assigned to a variable of a basic type (comp.Compiler.assignExprLocalDec())
+ER-SEM47.KRA, 24, Method 'm' was not found in superclass 'B' or its superclasses (comp.Compiler.factor())
 
 ER-SEM51.KRA, 17, Method 'put' is being redefined in subclass 'B' with a signature different from the method of superclass 'A' (comp.Compiler.methodDec())
 
@@ -50,6 +40,10 @@ ER-SIN04.KRA, 8, Statement expected (comp.Compiler.assignExprLocalDec())
 
 ######################################################
 Erros que foram sinalizados na linha errada:
+
+ER-SEM34.KRA
+    correto:    19, Message send 'a.m()' returns a value that is not used (comp.Compiler.statement())
+    sinalizado: 20, Message send 'FALTA FAZER' returns a value that is not used
 
 ER-SEM63.KRA
     correto:    12, '.' or '=' expected after an identifier OR statement expected (comp.Compiler.factor())
@@ -128,8 +122,6 @@ OK-GER19.KRA, 11, public/private or "}" expected
 
 OK-GER20.KRA, 12, public/private or "}" expected
 
-OK-GER21.KRA, 19, Static method using a static variable is not supported
-
 OK-GER22.KRA, 14, public/private or "}" expected
 
 OK-GER23.KRA, 24, Missing ';'
@@ -145,8 +137,6 @@ OK-SEM18.KRA, 11, public/private or "}" expected
 OK-SEM19.KRA, 12, public/private or "}" expected
 
 OK-SEM20.KRA, 6, public/private or "}" expected
-
-OK-SIN14.KRA, 39, Static method using a static variable is not supported
 
 OK-SIN16.KRA, 26, Statement expected
 
@@ -255,6 +245,16 @@ The compiler message was: "Command 'read' expects a variable"
 The 'ce' message is:      "Command 'read' expects a variable"
 
 
+ER-SEM18.KRA
+The compiler message was: "';' expected"
+The 'ce' message is:      "Type 'k' was not found"
+
+
+ER-SEM19.KRA
+The compiler message was: "';' expected"
+The 'ce' message is:      "Type 'Program' was not found"
+
+
 ER-SEM20.KRA
 The compiler message was: "Identifier expected"
 The 'ce' message is:      "Identifier expected"
@@ -295,6 +295,11 @@ The compiler message was: "Class 'A' is inheriting from itself"
 The 'ce' message is:      "Class 'A' is inheriting from itself"
 
 
+ER-SEM29.KRA
+The compiler message was: "Method 'put' of the subclass 'B' has a signature different from the same method of superclass 'A'"
+The 'ce' message is:      "Method 'put' of the subclass 'B' has a signature different from the same method of superclass 'A'"
+
+
 ER-SEM30.KRA
 The compiler message was: "Method 'put' of subclass 'B' has a signature different from method inherited from superclass 'A'"
 The 'ce' message is:      "Method 'put' of subclass 'B' has a signature different from method inherited from superclass 'A'"
@@ -315,14 +320,29 @@ The compiler message was: "Method 'm' is being redefined"
 The 'ce' message is:      "Method 'm' is being redeclared"
 
 
+ER-SEM36.KRA
+The compiler message was: "Expression expected in the right-hand side of assignment"
+The 'ce' message is:      "Expression expected in the right-hand side of assignment"
+
+
 ER-SEM37.KRA
 The compiler message was: "Method 'set' was not found in class 'A' or its superclasses"
 The 'ce' message is:      "Method 'set' was not found in class 'A' or its superclasses"
 
 
-ER-SEM44.KRA
-The compiler message was: "Command 'write' does not accept objects"
-The 'ce' message is:      "Command 'write' does not accept objects"
+ER-SEM41.KRA
+The compiler message was: "Type error: the type of the expression of the right-hand side is a basic type and the type of the variable of the left-hand side is a class"
+The 'ce' message is:      "Type error: the type of the expression of the right-hand side is a basic type and the type of the variable of the left-hand side is a class"
+
+
+ER-SEM42.KRA
+The compiler message was: "Type error: type of the left-hand side of the assignment is a basic type and the type of the right-hand side is a class"
+The 'ce' message is:      "Type error: type of the left-hand side of the assignment is a basic type and the type of the right-hand side is a class"
+
+
+ER-SEM43.KRA
+The compiler message was: "Type error: 'null' cannot be assigned to a variable of a basic type"
+The 'ce' message is:      "Type error: 'null' cannot be assigned to a variable of a basic type"
 
 
 ER-SEM45.KRA
@@ -333,11 +353,6 @@ The 'ce' message is:      "'int' or 'String' expression expected"
 ER-SEM46.KRA
 The compiler message was: "'super' used in class 'Program' that does not have a superclass"
 The 'ce' message is:      "'super' used in class 'Program' that does not have a superclass"
-
-
-ER-SEM47.KRA
-The compiler message was: "Method 'm' was not found in superclass 'B' or its superclasses"
-The 'ce' message is:      "Method 'm' was not found in superclass 'B' or its superclasses"
 
 
 ER-SEM48.KRA
