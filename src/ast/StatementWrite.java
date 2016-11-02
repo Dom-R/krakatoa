@@ -22,12 +22,12 @@ public class StatementWrite extends Statement {
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.printIdent("write( ");
+		if (flagln)
+			pw.printIdent("writeln( ");
+		else
+			pw.printIdent("write( ");
 		exprList.genKra (pw);
 		pw.println(" );");
-		
-		if (flagln)
-			pw.printlnIdent("write( \"\\n\" );");
 	}
 
 	private ExprList exprList;
