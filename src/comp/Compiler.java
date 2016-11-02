@@ -198,8 +198,6 @@ public class Compiler {
 				// Limpa variaveis locais
 				symbolTable.removeLocalIdent();
 				
-				// TODO: Verificar redeclaração de metodo
-				
 				//System.out.println("Metodo: " + qualifier.toString() + " " + name);
 				if(qualifier == Symbol.PRIVATE)
 					currentClass.addPrivateMethod(methodDec(t, name, qualifier));
@@ -210,9 +208,6 @@ public class Compiler {
 			else {
 				ArrayList<InstanceVariable> arrayInstanceVariable = instanceVarDec(t, name);
 				for( InstanceVariable i : arrayInstanceVariable ) {
-					
-					// TODO: Verificar redeclaração de variaveis de instancia
-					
 					//System.out.println("Debug: " + i.getType() + " " + i.getName());
 					currentClass.addInstanceVariable(i);
 				}
@@ -245,12 +240,34 @@ public class Compiler {
 		// InstVarDec ::= [ "static" ] "private" Type IdList ";"
 		
 		ArrayList<InstanceVariable> arrayInstanceVariable = new ArrayList<InstanceVariable>();
+		
+		// Verificacao se variavel de instancia esta sendo redeclarada
+		Iterator<InstanceVariable> iter = currentClass.getInstanceVariableList().elements();
+		while(iter.hasNext()) {
+			InstanceVariable tempVar = iter.next();
+			if(tempVar.getName().equals(name)) {
+				signalError.showError("Variable '" + name + "' is being redeclared");
+				break;
+			}
+		}
+		
 		arrayInstanceVariable.add(new InstanceVariable(name, type) );
 		while (lexer.token == Symbol.COMMA) {
 			lexer.nextToken();
 			if ( lexer.token != Symbol.IDENT )
 				signalError.showError("Identifier expected");
 			String variableName = lexer.getStringValue();
+			
+			// Verificacao se variavel de instancia esta sendo redeclarada
+			iter = currentClass.getInstanceVariableList().elements();
+			while(iter.hasNext()) {
+				InstanceVariable tempVar = iter.next();
+				if(tempVar.getName().equals(variableName)) {
+					signalError.showError("Variable '" + variableName + "' is being redeclared");
+					break;
+				}
+			}
+			
 			arrayInstanceVariable.add(new InstanceVariable(variableName, type) );
 			lexer.nextToken();
 		}
@@ -319,16 +336,26 @@ public class Compiler {
 						}
 						
 						// verifica se parametros sao diferentes
-						if( ( paramList == null && tempMethod.getParamList() != null )
+						if(paramList == null && tempMethod.getParamList() == null) {
+							break;
+						} else if( ( paramList == null && tempMethod.getParamList() != null )
 								|| ( paramList != null && tempMethod.getParamList() == null )) {
 							signalError.showError("Method '" + name + "' of the subclass '" + currentClass.getName() + "' has a signature different from the same method of superclass '" + currentClass.getSuperclass().getName() + "'");
 						} else {
 							
+							//System.out.println("Current Param List" + paramList);
+							//System.out.println("Temp Param List" + tempMethod.getParamList());
+							
 							// TODO: Implementar verificacao de tipos diferentes no parametro aqui
-							
-							
+							Iterator<Parameter> iterCurrentParamList = paramList.elements();
+							Iterator<Parameter> iterTempParamList = tempMethod.getParamList().elements();
+							while(iterCurrentParamList.hasNext() && iterTempParamList.hasNext()) {
+								if(iterCurrentParamList.next().getType() != iterTempParamList.next().getType()) {
+									signalError.showError("Method '" + name + "' is being redefined in subclass '" + currentClass.getName() + "' with a signature different from the method of superclass '" + currentClass.getSuperclass().getName() + "'");
+								}
+							}
+
 						}
-						
 						
 					}
 				}
@@ -565,7 +592,7 @@ public class Compiler {
 			statement = compositeStatement();
 			break;
 		default:
-			System.out.println("Statement expected: " + lexer.token.toString());
+			//System.out.println("Statement expected: " + lexer.token.toString());
 			signalError.showError("Statement expected");
 		}
 		
@@ -657,7 +684,7 @@ public class Compiler {
 					// Validacao expr direita nao eh subtipo da expr esquerda
 					if(right.getType() instanceof KraClass && left.getType() instanceof KraClass && !(right instanceof NullExpr) ) {
 						
-						KraClass classRight = (KraClass) right.getType();
+						/*KraClass classRight = (KraClass) right.getType();
 						
 						KraClass superClassRight = classRight.getSuperclass();
 						while(superClassRight != null) {
@@ -665,9 +692,9 @@ public class Compiler {
 								break;
 							}
 							superClassRight = superClassRight.getSuperclass();
-						}
+						}*/
 						
-						if(superClassRight == null) {
+						if(!isSubType((KraClass) left.getType(), (KraClass) right.getType())) {
 							signalError.showError("Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side");
 						}
 						
@@ -688,7 +715,7 @@ public class Compiler {
 			
 			// Message Send para Statement
 			if(right == null && left instanceof MessageSend ) {
-				System.out.println("Message Send");
+				//System.out.println("Message Send");
 				statement = new MessageSendStatement((MessageSend) left);
 			} else {
 				statement = new StatementExpr(left, right);
@@ -904,7 +931,6 @@ public class Compiler {
 		lexer.nextToken();
 		
 		// Verificacao que impede write de expressoes com tipo booleano ou de objeto
-		// TODO: Arrumar
 		Iterator<Expr> iter = exprList.getExprListIterator();
 		while(iter.hasNext()) {
 			Type type = iter.next().getType();
@@ -1218,7 +1244,7 @@ public class Compiler {
 				
 				// TODO: Arrumar
 				if(v == null) {
-					System.out.println("Variavel Null: " + firstId);
+					//System.out.println("Variavel Null: " + firstId);
 					//signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 				
@@ -1413,7 +1439,6 @@ public class Compiler {
 					 * variável de instância 'ident'
 					 */
 					
-					// TODO: Achar variavel de instancia
 					InstanceVariable variavel = null;
 					Iterator<InstanceVariable> iter = currentClass.getInstanceVariableList().elements();
 					while(iter.hasNext()) {
@@ -1444,6 +1469,19 @@ public class Compiler {
 		int value = lexer.getNumberValue();
 		lexer.nextToken();
 		return new LiteralInt(value);
+	}
+	
+	public boolean isSubType(KraClass left, KraClass right) {
+		
+		KraClass superClassRight = right.getSuperclass();
+		while(superClassRight != null) {
+			if(superClassRight == left) {
+				return true;
+			}
+			superClassRight = superClassRight.getSuperclass();
+		}
+		
+		return false;
 	}
 
 	private static boolean startExpr(Symbol token) {

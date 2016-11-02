@@ -1,6 +1,6 @@
 Relatório do Compilador
 
-9 de um total de 145 erros que deveriam ser sinalizados não o foram (6%)
+7 de um total de 145 erros que deveriam ser sinalizados não o foram (4%)
 17 erros foram sinalizados na linha errada (11%)
 16 erros foram sinalizados em 73 arquivos sem erro (21%)
 
@@ -8,11 +8,7 @@ Erros que deveriam ser sinalizados mas não foram:
 
 ER-SEM02.KRA, 9, Variable 'I' was not declared (comp.Compiler.assignExprLocalDec())
 
-ER-SEM28.KRA, 10, Variable 'i' is being redeclared (comp.Compiler.localDec())
-
 ER-SEM40.KRA, 40, Type error: the type of the real parameter is not subclass of the type of the formal parameter (comp.Compiler.factor())
-
-ER-SEM51.KRA, 17, Method 'put' is being redefined in subclass 'B' with a signature different from the method of superclass 'A' (comp.Compiler.methodDec())
 
 ER-SEM57.KRA, 21, Incompatible types cannot be compared with '==' because the result will always be 'false' (comp.Compiler.expr())
 
@@ -295,6 +291,11 @@ The compiler message was: "Class 'A' is inheriting from itself"
 The 'ce' message is:      "Class 'A' is inheriting from itself"
 
 
+ER-SEM28.KRA
+The compiler message was: "Variable 'i' is being redeclared"
+The 'ce' message is:      "Variable 'i' is being redeclared"
+
+
 ER-SEM29.KRA
 The compiler message was: "Method 'put' of the subclass 'B' has a signature different from the same method of superclass 'A'"
 The 'ce' message is:      "Method 'put' of the subclass 'B' has a signature different from the same method of superclass 'A'"
@@ -393,6 +394,11 @@ The 'ce' message is:      "Class expected"
 ER-SEM50.KRA
 The compiler message was: "'break' statement found outside a 'while' statement"
 The 'ce' message is:      "Command 'break' outside a command 'while'"
+
+
+ER-SEM51.KRA
+The compiler message was: "Method 'put' is being redefined in subclass 'B' with a signature different from the method of superclass 'A'"
+The 'ce' message is:      "Method 'put' is being redefined in subclass 'B' with a signature different from the method of superclass 'A'"
 
 
 ER-SEM59.KRA
