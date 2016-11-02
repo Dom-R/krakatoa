@@ -15,7 +15,7 @@ public class StatementRead extends Statement {
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.printIdent("read(");
+		pw.printIdent("read( ");
 		int size = variableExprList.size();
 		for(VariableExpr ve : variableExprList) {
 			if(ve.getType() instanceof KraClass) {
@@ -25,7 +25,7 @@ public class StatementRead extends Statement {
 			if ( --size > 0 )
                 pw.print(", ");
 		}
-		pw.println(");");
+		pw.println(" );");
 	}
 	
 	private ArrayList<VariableExpr> variableExprList;
