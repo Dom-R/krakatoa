@@ -12,9 +12,9 @@ public class StatementIf extends Statement {
 		pw.printIdent("if ( ");
 		expr.genC(pw, false);
 		pw.println(" )");
-		pw.add();
+		//pw.add();
 		statementThen.genC(pw);
-		pw.sub();
+		//pw.sub();
 		if( statementElse != null ) {
 			pw.println("else");
 			pw.add();
@@ -27,10 +27,10 @@ public class StatementIf extends Statement {
 	public void genKra(PW pw) {
 		pw.printIdent("if ( ");
 		expr.genKra(pw, false);
-		pw.println(" )");
-		pw.add();
+		pw.print(" )");
+		//pw.add();
 		statementThen.genKra(pw);
-		pw.sub();
+		//pw.sub();
 		if( statementElse != null ) {
 			pw.println("else");
 			pw.add();

@@ -7,7 +7,7 @@ public class StatementComposite extends Statement {
 	
 	@Override
 	public void genC(PW pw) {
-		pw.println("{");
+		pw.println(" {");
 		pw.add();
 		//statementList.genC(pw);
 		pw.sub();
@@ -16,7 +16,7 @@ public class StatementComposite extends Statement {
 	
 	@Override
 	public void genKra(PW pw) {
-		pw.printlnIdent("{");
+		pw.println(" {");
 		pw.add();
 		statementList.genKra(pw);
 		pw.sub();
