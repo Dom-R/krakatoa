@@ -14,6 +14,10 @@ public class NullExpr extends Expr {
    @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
-		pw.print("null;");
+	   	if (putParenthesis)
+	   		pw.print("(");
+		pw.print("null");
+		if (putParenthesis)
+	   		pw.print(")");
 	}
 }
