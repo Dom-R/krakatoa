@@ -25,6 +25,10 @@ public class MessageSendToVariable extends MessageSend {
     	this.parameterList = parameterList;
     }
     
+    public String getName() {
+ 	   return "FALTA FAZER";
+    }
+    
     private ExprList parameterList;
     private Method method;
     private Variable variable;

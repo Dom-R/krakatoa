@@ -22,6 +22,10 @@ public class MessageSendToSuper extends MessageSend {
     	this.method = method;
     	this.parameterList = parameterList;
     }
+
+    public String getName() {
+ 	   return "FALTA FAZER";
+    }
     
     private ExprList parameterList;
     private Method method;

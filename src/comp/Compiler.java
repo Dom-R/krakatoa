@@ -342,11 +342,7 @@ public class Compiler {
 								|| ( paramList != null && tempMethod.getParamList() == null )) {
 							signalError.showError("Method '" + name + "' of the subclass '" + currentClass.getName() + "' has a signature different from the same method of superclass '" + currentClass.getSuperclass().getName() + "'");
 						} else {
-							
-							//System.out.println("Current Param List" + paramList);
-							//System.out.println("Temp Param List" + tempMethod.getParamList());
-							
-							// TODO: Implementar verificacao de tipos diferentes no parametro aqui
+							// Verificacao de tipos diferentes no parametro aqui
 							Iterator<Parameter> iterCurrentParamList = paramList.elements();
 							Iterator<Parameter> iterTempParamList = tempMethod.getParamList().elements();
 							while(iterCurrentParamList.hasNext() && iterTempParamList.hasNext()) {
@@ -551,12 +547,6 @@ public class Compiler {
 		case BOOLEAN:
 		case STRING:
 			statement = assignExprLocalDec();
-			if(statement instanceof MessageSendStatement) {
-				 MessageSendStatement message = (MessageSendStatement) statement;
-				 if(message.getType() != Type.voidType) {
-					 signalError.showError("Message send '" + message.getName() + "' returns a value that is not used");
-				 }
-			}
 			break;
 		case ASSERT:
 			statement = assertStatement();
@@ -684,16 +674,6 @@ public class Compiler {
 					// Validacao expr direita nao eh subtipo da expr esquerda
 					if(right.getType() instanceof KraClass && left.getType() instanceof KraClass && !(right instanceof NullExpr) ) {
 						
-						/*KraClass classRight = (KraClass) right.getType();
-						
-						KraClass superClassRight = classRight.getSuperclass();
-						while(superClassRight != null) {
-							if(superClassRight == left.getType()) {
-								break;
-							}
-							superClassRight = superClassRight.getSuperclass();
-						}*/
-						
 						if(!isSubType((KraClass) left.getType(), (KraClass) right.getType())) {
 							signalError.showError("Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side");
 						}
@@ -716,6 +696,9 @@ public class Compiler {
 			// Message Send para Statement
 			if(right == null && left instanceof MessageSend ) {
 				//System.out.println("Message Send");
+				if(left.getType() != Type.voidType) {
+					signalError.showError("Message send '" + ((MessageSend) left).getName() + "' returns a value that is not used");
+				}
 				statement = new MessageSendStatement((MessageSend) left);
 			} else {
 				statement = new StatementExpr(left, right);
@@ -1245,7 +1228,7 @@ public class Compiler {
 				// TODO: Arrumar
 				if(v == null) {
 					//System.out.println("Variavel Null: " + firstId);
-					//signalError.showError("Identifier '" + firstId + "' was not found");
+					signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 				
 				VariableExpr variableExpr = new VariableExpr(v, false);
@@ -1424,13 +1407,14 @@ public class Compiler {
 				}
 				else if ( lexer.token == Symbol.DOT ) {
 					// "this" "." Id "." Id "(" [ ExpressionList ] ")"
-					signalError.showError("Static method using a static variable is not supported");
 					
 					lexer.nextToken();
 					if ( lexer.token != Symbol.IDENT )
 						signalError.showError("Identifier expected");
+					String methodName = lexer.getStringValue();
 					lexer.nextToken();
 					exprList = this.realParameters();
+					
 				}
 				else {
 					// retorne o objeto da ASA que representa "this" "." Id
@@ -1479,6 +1463,30 @@ public class Compiler {
 				return true;
 			}
 			superClassRight = superClassRight.getSuperclass();
+		}
+		
+		return false;
+	}
+	
+	public boolean compareExprListParamList(ExprList exprList, ParamList paramList) {
+		
+		Iterator<Expr> iterExprList = exprList.getExprListIterator();
+		Iterator<Parameter> iterParamList = paramList.elements();
+		
+		while(iterExprList.hasNext() && iterParamList.hasNext()) {
+			Expr expr = iterExprList.next();
+			Parameter param = iterParamList.next();
+			
+			if(expr.getType() != param.getType()) {
+				
+				if( expr.getType() instanceof KraClass && param.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
+					if(!isSubType((KraClass) expr.getType(), (KraClass) param.getType())) {
+						signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+					}
+				}
+				
+			}
+			
 		}
 		
 		return false;
