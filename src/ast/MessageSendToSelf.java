@@ -14,12 +14,24 @@ public class MessageSendToSelf extends MessageSend {
     @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
-		pw.print("this." + method.getName() + "(" );
+    	if(variable == null) {
+    		pw.print("this." + method.getName() + "(" );
+    	} else {
+    		pw.print("this." + variable.getName() + "." + method.getName() + "(" );
+    	}
+    		
 		if(parameterList != null) parameterList.genKra(pw);
 		pw.print(")");
 	}
     
     public MessageSendToSelf(Method method, ExprList parameterList) {
+    	this.variable = null;
+    	this.method = method;
+    	this.parameterList = parameterList;
+    }
+    
+    public MessageSendToSelf(Variable variable, Method method, ExprList parameterList) {
+    	this.variable = variable;
     	this.method = method;
     	this.parameterList = parameterList;
     }
@@ -28,6 +40,7 @@ public class MessageSendToSelf extends MessageSend {
  	   return "FALTA FAZER";
     }
     
+    private Variable variable;
     private ExprList parameterList;
     private Method method;
     

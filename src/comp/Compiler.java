@@ -216,7 +216,7 @@ public class Compiler {
 		
 		// Verificacao se classe Program possui metodo run
 		// TODO: Arrumar
-		/*if(className.equals("Program")) {
+		if(className.equals("Program")) {
 			boolean hasRun = false;
 			Iterator<Method> publicMethodIterator = currentClass.getPublicMethodList().elements();
 			while(publicMethodIterator.hasNext()) {
@@ -227,7 +227,7 @@ public class Compiler {
 			if(!hasRun) {
 				signalError.showError("Method 'run' was not found in class 'Program'");
 			}
-		}*/
+		}
 		
 		if ( lexer.token != Symbol.RIGHTCURBRACKET )
 			signalError.showError("public/private or \"}\" expected");
@@ -688,11 +688,6 @@ public class Compiler {
 				
 			} // StatementExpr que herda de statement
 			
-			if ( lexer.token != Symbol.SEMICOLON )
-				signalError.showError("';' expected", true);
-			else
-				lexer.nextToken();
-			
 			// Message Send para Statement
 			if(right == null && left instanceof MessageSend ) {
 				//System.out.println("Message Send");
@@ -703,6 +698,11 @@ public class Compiler {
 			} else {
 				statement = new StatementExpr(left, right);
 			}
+			
+			if ( lexer.token != Symbol.SEMICOLON )
+				signalError.showError("';' expected", true);
+			else
+				lexer.nextToken();
 		}
 		return statement;
 	}
@@ -1415,6 +1415,55 @@ public class Compiler {
 					lexer.nextToken();
 					exprList = this.realParameters();
 					
+					// Recupera variavel de instancia
+					InstanceVariable variableClass = null;
+					Iterator<InstanceVariable> iter = currentClass.getInstanceVariableList().elements();
+					while(iter.hasNext()) {
+						InstanceVariable tempVar = iter.next();
+						if(tempVar.getName().equals(id)) {
+							variableClass = tempVar;
+						}
+					}
+					
+					Method method4 = null;
+					// Recupera metodo
+					if(variableClass != null) {
+						
+						if(variableClass.getType() instanceof KraClass) {
+							// procura por metodo
+							KraClass pointedClass4 = (KraClass) variableClass.getType();
+							do {
+								if( pointedClass4 != null) {
+									MethodList publicMethod = pointedClass4.getPublicMethodList();
+									Iterator<Method> iterator = publicMethod.elements();
+									while(iterator.hasNext()) {
+										Method tempMethod = iterator.next();
+										if(tempMethod.getName().equals(methodName)) {
+											
+											// TODO: verifica se parametros sao iguais ao do metodo
+											if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
+												method4 = tempMethod;
+											} else {
+												signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+											}
+											break;
+										}
+									}
+								} else {
+									signalError.showError("Method '" + methodName + "' was not found in class '" + variableClass.getName() + "' or its superclasses");
+								}
+								pointedClass4 = pointedClass4.getSuperclass();
+							} while(method4 == null);
+							
+						} else {
+							signalError.showError("Cannot send message '" + methodName + "' to a basic type instance variable '" + id + "'");
+						}
+						
+					} else {
+						signalError.showError("Instance Variable '" + id + "' was not found");
+					}
+					
+					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(variableClass, method4, exprList);
 				}
 				else {
 					// retorne o objeto da ASA que representa "this" "." Id
@@ -1482,6 +1531,7 @@ public class Compiler {
 				if( expr.getType() instanceof KraClass && param.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
 					if(!isSubType((KraClass) expr.getType(), (KraClass) param.getType())) {
 						signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+						return false;
 					}
 				}
 				
@@ -1489,7 +1539,7 @@ public class Compiler {
 			
 		}
 		
-		return false;
+		return true;
 	}
 
 	private static boolean startExpr(Symbol token) {
