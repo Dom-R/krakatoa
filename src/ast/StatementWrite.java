@@ -27,7 +27,7 @@ public class StatementWrite extends Statement {
 		pw.println(" );");
 		
 		if (flagln)
-			pw.printlnIdent("write(\"\n\");");
+			pw.printlnIdent("write(\"\\n\");");
 	}
 
 	private ExprList exprList;
