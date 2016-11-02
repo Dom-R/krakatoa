@@ -20,10 +20,18 @@ public class StatementWhile extends Statement {
 	public void genKra(PW pw) {
 		pw.printIdent("while ( ");
 		expr.genKra(pw, false);
-		pw.println(" )");
-		pw.add();
+		pw.print(" )");
+		//pw.add();
+		if ( ! (statement instanceof StatementComposite) ) {
+			pw.print("\n");
+			pw.add();
+		}
+			
 		statement.genKra(pw);
-		pw.sub();
+		
+		//pw.sub();
+		if ( ! (statement instanceof StatementComposite) )
+			pw.sub();
 	}
 
 	private Expr expr;

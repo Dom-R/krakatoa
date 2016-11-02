@@ -12,9 +12,9 @@ public class StatementIf extends Statement {
 		pw.printIdent("if ( ");
 		expr.genC(pw, false);
 		pw.println(" )");
-		//pw.add();
+		pw.add();
 		statementThen.genC(pw);
-		//pw.sub();
+		pw.sub();
 		if( statementElse != null ) {
 			pw.println("else");
 			pw.add();
@@ -28,14 +28,34 @@ public class StatementIf extends Statement {
 		pw.printIdent("if ( ");
 		expr.genKra(pw, false);
 		pw.print(" )");
+		
 		//pw.add();
-		statementThen.genKra(pw);
-		//pw.sub();
-		if( statementElse != null ) {
-			pw.println("else");
+		if ( ! (statementThen instanceof StatementComposite) ) {
+			pw.print("\n");
 			pw.add();
-			statementElse.genKra(pw);
+		}
+			
+		statementThen.genKra(pw);
+		
+		//pw.sub();
+		if ( ! (statementThen instanceof StatementComposite) )
 			pw.sub();
+		
+		if( statementElse != null ) {
+			pw.printIdent("else");
+			
+			if ( ! (statementElse instanceof StatementComposite) ) {
+				pw.print("\n");
+				pw.add();
+			}
+			//pw.add();
+				
+			statementElse.genKra(pw);
+			
+			//pw.sub();
+			if ( ! (statementElse instanceof StatementComposite) )
+				pw.sub();
+			
 		}
 	}
 
