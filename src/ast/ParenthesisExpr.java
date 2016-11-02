@@ -9,7 +9,7 @@ public class ParenthesisExpr extends Expr {
     public void genC( PW pw, boolean putParenthesis ) {
         pw.print("(");
         expr.genC(pw, false);
-        pw.printIdent(")");
+        pw.print(")");
     }
     
     public Type getType() {
@@ -21,7 +21,7 @@ public class ParenthesisExpr extends Expr {
 		// TODO Auto-generated method stub
     	pw.print("(");
         expr.genKra(pw, false);
-        pw.printIdent(")");
+        pw.print(")");
 	}
     
     private Expr expr;
