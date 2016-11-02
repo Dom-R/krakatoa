@@ -206,7 +206,7 @@ public class Compiler {
 				else
 					currentClass.addPublicMethod(methodDec(t, name, qualifier));
 			} else if ( qualifier != Symbol.PRIVATE )
-				signalError.showError("Attempt to declare a public instance variable");
+				signalError.showError("Attempt to declare public instance variable '" + name + "'");
 			else {
 				ArrayList<InstanceVariable> arrayInstanceVariable = instanceVarDec(t, name);
 				for( InstanceVariable i : arrayInstanceVariable ) {
@@ -565,6 +565,7 @@ public class Compiler {
 			statement = compositeStatement();
 			break;
 		default:
+			System.out.println("Statement expected: " + lexer.token.toString());
 			signalError.showError("Statement expected");
 		}
 		
@@ -651,9 +652,33 @@ public class Compiler {
 				
 				// Validacao inicial se as duas expr tem o mesmo tipo
 				// TODO: Arrumar
-				/*if(left.getType() != right.getType()) {
-					signalError.showError("'" + left.getType().getName() + "' cannot be assigned to '" + left.getType().getName() + "'");
-				}*/
+				if(left.getType() != right.getType()) {
+					
+					// Validacao expr direita nao eh subtipo da expr esquerda
+					if(right.getType() instanceof KraClass && left.getType() instanceof KraClass && !(right instanceof NullExpr) ) {
+						
+						KraClass classRight = (KraClass) right.getType();
+						
+						KraClass superClassRight = classRight.getSuperclass();
+						while(superClassRight != null) {
+							if(superClassRight == left.getType()) {
+								break;
+							}
+							superClassRight = superClassRight.getSuperclass();
+						}
+						
+						if(superClassRight == null) {
+							signalError.showError("Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side");
+						}
+						
+					}
+					
+					if( !(right.getType() instanceof KraClass && left.getType() instanceof KraClass) ) {
+						signalError.showError("'" + right.getType().getName() + "' cannot be assigned to '" + left.getType().getName() + "'");
+					}
+				}
+				
+				
 			} // StatementExpr que herda de statement
 			
 			if ( lexer.token != Symbol.SEMICOLON )
@@ -767,9 +792,31 @@ public class Compiler {
 		
 		// TODO: Verificar tipo de expr e verificar se o tipo de expr eh igual ao do tipo do metodo, senao da erro
 		// Arrumar isso abaixo
-		/*if(expr.getType() != currentMethod.getType()) {
-			signalError.showError("Illegal 'return' statement. Method returns '" + currentMethod.getType().getName() + "'");
-		}*/
+		if(currentMethod.getType() != expr.getType()) {
+			
+			// Validacao expr direita nao eh subtipo da expr esquerda
+			if(expr.getType() instanceof KraClass && currentMethod.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
+				
+				KraClass classRight = (KraClass) expr.getType();
+				
+				KraClass superClassRight = classRight.getSuperclass();
+				while(superClassRight != null) {
+					if(superClassRight == currentMethod.getType()) {
+						break;
+					}
+					superClassRight = superClassRight.getSuperclass();
+				}
+				
+				if(superClassRight == null) {
+					signalError.showError("Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side");
+				}
+				
+			}
+			
+			if( !(expr.getType() instanceof KraClass && currentMethod.getType() instanceof KraClass) ) {
+				signalError.showError("Illegal 'return' statement. Method returns '" + currentMethod.getType().getName() + "'");
+			}
+		}
 		
 		if ( lexer.token != Symbol.SEMICOLON )
 			signalError.show(ErrorSignaller.semicolon_expected);
