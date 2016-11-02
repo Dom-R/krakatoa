@@ -11,7 +11,7 @@ public class StatementComposite extends Statement {
 		pw.add();
 		//statementList.genC(pw);
 		pw.sub();
-		pw.println("}");
+		pw.printlnIdent("}");
 	}
 	
 	@Override

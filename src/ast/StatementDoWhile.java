@@ -35,7 +35,7 @@ public class StatementDoWhile extends Statement {
 		}
 		   
 		pw.sub();
-		pw.printIdent("while(");
+		pw.printIdent("}	while(");
 		expr.genKra(pw, false);
 		pw.println(");");
 	}
