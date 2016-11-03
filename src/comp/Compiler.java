@@ -617,6 +617,10 @@ public class Compiler {
 	private boolean isType(String name) {
 		return this.symbolTable.getInGlobal(name) != null;
 	}
+	
+	private boolean isVariable(String name) {
+		return this.symbolTable.getInLocal(name) != null;
+	}
 
 	/*
 	 * AssignExprLocalDec ::= Expression [ ``$=$'' Expression ] | LocalDec
@@ -695,6 +699,8 @@ public class Compiler {
 					signalError.showError("Message send '" + ((MessageSend) left).getName() + "' returns a value that is not used");
 				}
 				statement = new MessageSendStatement((MessageSend) left);
+			} else if(right == null) { // Se right nao tem nada e left nao eh envio de mensagem entao esta errado
+				signalError.showError("Statement expected");
 			} else {
 				statement = new StatementExpr(left, right);
 			}
@@ -992,6 +998,13 @@ public class Compiler {
 				|| op == Symbol.LT || op == Symbol.GE || op == Symbol.GT ) {
 			lexer.nextToken();
 			Expr right = simpleExpr();
+			
+			// Validacao de ==
+			
+			
+			// Validacao de !=
+			
+			
 			left = new CompositeExpr(left, op, right);
 		}
 		return left;
@@ -1464,6 +1477,7 @@ public class Compiler {
 					}
 					
 					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(variableClass, method4, exprList);
+					return messageSendToSelf;
 				}
 				else {
 					// retorne o objeto da ASA que representa "this" "." Id
@@ -1485,7 +1499,7 @@ public class Compiler {
 					return variableExpr;
 				}
 			}
-			break;
+			//break;
 		default:
 			signalError.showError("Expression expected");
 		}

@@ -1,9 +1,5 @@
 package ast;
 
-import lexer.*;
-import java.util.HashMap;
-
-
 public class ThisExpr extends Expr {
 
     public ThisExpr(KraClass classeReferida) {
