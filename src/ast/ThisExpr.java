@@ -33,5 +33,9 @@ public class ThisExpr extends Expr {
 		  pw.print(")");
 	}
 	
+	public String getName() {
+		return "this";
+	}
+	
 	private KraClass classeReferida;
 }

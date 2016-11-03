@@ -20,4 +20,9 @@ public class NullExpr extends Expr {
 		if (putParenthesis)
 	   		pw.print(")");
 	}
+   
+   public String getName() {
+	   return "null";
+   }
+   
 }

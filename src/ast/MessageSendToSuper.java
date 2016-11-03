@@ -1,5 +1,7 @@
 package ast;
 
+import java.util.Iterator;
+
 public class MessageSendToSuper extends MessageSend { 
 
     public Type getType() { 
@@ -24,7 +26,24 @@ public class MessageSendToSuper extends MessageSend {
     }
 
     public String getName() {
- 	   return "FALTA FAZER";
+    	String nome = "super.";
+		nome += method.getName() + "(";
+    	
+    	if(parameterList != null) {
+    		Iterator<Expr> iter = parameterList.getExprListIterator();
+    		while(iter.hasNext()) {
+    			Expr e = iter.next();
+    			nome += e.getName();
+    			if(iter.hasNext()) {
+    				nome += ",";
+    			}
+    		}
+    	}
+    	
+    	nome += ")";
+    	
+    	return nome;
+    	
     }
     
     private ExprList parameterList;

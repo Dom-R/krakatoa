@@ -20,5 +20,9 @@ public class LiteralString extends Expr {
         return Type.stringType;
     }
     
+    public String getName() {
+    	return literalString;
+    }
+    
     private String literalString;
 }

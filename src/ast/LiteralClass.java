@@ -23,6 +23,11 @@ public class LiteralClass extends Expr {
     public Type getType() {
         return value;
     }
+
+    public String getName() {
+		return value.getName();
+	}
     
     private KraClass value;
+
 }

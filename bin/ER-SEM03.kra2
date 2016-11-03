@@ -1,8 +1,0 @@
-class Program {
-   public void run() {
-      int i;
-      int i;
-      read(i);
-      write( i );
-   }
-}

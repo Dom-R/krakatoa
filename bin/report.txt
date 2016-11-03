@@ -207,7 +207,7 @@ The 'ce' message is:      "Method 'm' is being redeclared"
 
 
 ER-SEM34.KRA
-The compiler message was: "Message send 'FALTA FAZER' returns a value that is not used"
+The compiler message was: "Message send 'a.m()' returns a value that is not used"
 The 'ce' message is:      "Message send 'a.m()' returns a value that is not used"
 
 

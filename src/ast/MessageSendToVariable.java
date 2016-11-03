@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.Iterator;
 
 public class MessageSendToVariable extends MessageSend { 
 
@@ -26,7 +27,23 @@ public class MessageSendToVariable extends MessageSend {
     }
     
     public String getName() {
- 	   return "FALTA FAZER";
+    	String nome = variable.getName() + "." + method.getName() + "(";
+    	
+    	if(parameterList != null) {
+    		Iterator<Expr> iter = parameterList.getExprListIterator();
+    		while(iter.hasNext()) {
+    			Expr e = iter.next();
+    			nome += e.getName();
+    			if(iter.hasNext()) {
+    				nome += ",";
+    			}
+    		}
+    	}
+    	
+    	nome += ")";
+    	
+    	return nome;
+    	
     }
     
     private ExprList parameterList;

@@ -1,7 +1,0 @@
-class A {
-}
-class Program {
-   public void run() {
-      A a      read(this.a);
-   }
-}

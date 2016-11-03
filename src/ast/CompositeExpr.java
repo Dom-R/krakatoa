@@ -76,4 +76,13 @@ public class CompositeExpr extends Expr {
 		if ( putParenthesis )
 		  pw.print(")");
 	}
+	
+	public String getName() {
+		String nome = "";
+		nome += left.getName();
+		nome += " " + arrayOper.get(oper) + " ";
+		nome += right.getName();
+		
+		return nome;
+	}
 }

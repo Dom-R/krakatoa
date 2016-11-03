@@ -1,6 +1,0 @@
-class Program {
-   public void run() {
-      while ( 0 )
-         write( 0 );
-   }
-}

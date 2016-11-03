@@ -34,6 +34,12 @@ public class SignalExpr extends Expr {
          if ( putParenthesis )
             pw.print(")");
 	}
+    
+    public String getName() {
+ 	   String nome = (oper == Symbol.PLUS ? "+" : "-");
+ 	   nome += expr.getName();
+ 	   return nome;
+    }
 
     private Expr expr;
     private Symbol oper;

@@ -5,6 +5,14 @@ public class LiteralBoolean extends Expr {
     public LiteralBoolean( boolean value ) {
         this.value = value;
     }
+    
+    public String getName() {
+    	if(value) {
+    		return "true";
+    	} else {
+    		return "false";
+    	}
+    }
 
     @Override
 	public void genC( PW pw, boolean putParenthesis ) {

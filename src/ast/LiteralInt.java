@@ -23,5 +23,9 @@ public class LiteralInt extends Expr {
         return Type.intType;
     }
     
+    public String getName() {
+    	return "" + value;
+    }
+    
     private int value;
 }

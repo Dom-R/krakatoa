@@ -1,6 +1,0 @@
-class Program {
-   public void run() {
-      boolean b;
-      b = 0;
-   }
-}

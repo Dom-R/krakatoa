@@ -23,7 +23,7 @@ public class MessageSendStatement extends Statement {
    }
    
    public String getName() {
-	   return "FALTA FAZER";
+	   return messageSend.getName();
    }
 
    private MessageSend  messageSend;

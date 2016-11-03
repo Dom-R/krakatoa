@@ -53,6 +53,23 @@ public class UnaryExpr extends Expr {
 	public Type getType() {
 		return expr.getType();
 	}
+	
+	public String getName() {
+		String nome = "";
+		switch (op) {
+		case PLUS:
+			nome = "+";
+			break;
+		case MINUS:
+			nome = "-";
+			break;
+		case NOT:
+			nome = "!";
+			break;
+		}
+		nome += expr.getName();
+		return nome;
+	}
 
 	private Expr	expr;
 	private Symbol	op;
