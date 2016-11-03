@@ -1,0 +1,12 @@
+class A {
+}
+class B extends A {
+}
+class Program {
+   public void run() {
+      A a;
+      B b;
+      a = new A();
+      b = a;
+   }
+}

@@ -1,0 +1,14 @@
+class A {
+}
+class B {
+}
+class Program {
+   public void run() {
+      A a;
+      B b;
+      a = null;
+      b = null;
+      if ( (a) == (b) )
+         write( 0 );
+   }
+}

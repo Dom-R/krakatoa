@@ -1,0 +1,13 @@
+class Program {
+   public int m() {
+      int i;
+      i = 1asdasd;
+      while ( i < 10 )
+         {
+            write( i );
+            i = i + 1;
+         }
+   }
+   public void run() {
+   }
+}

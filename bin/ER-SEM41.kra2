@@ -1,0 +1,8 @@
+class A {
+}
+class Program {
+   public void run() {
+      A a;
+      a = 0;
+   }
+}

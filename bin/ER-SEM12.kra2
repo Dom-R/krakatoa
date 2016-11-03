@@ -1,0 +1,5 @@
+class Program {
+   public void run() {
+      write( (((1 + 2) + ) + 1) + 0 );
+   }
+}
