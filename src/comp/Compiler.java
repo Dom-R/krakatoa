@@ -632,7 +632,7 @@ public class Compiler {
 				|| lexer.token == Symbol.STRING ||
 				// token é uma classe declarada textualmente antes desta
 				// instrução
-				(lexer.token == Symbol.IDENT && isType(lexer.getStringValue())) ) {
+				(lexer.token == Symbol.IDENT && isType(lexer.getStringValue()) && !isVariable(lexer.getStringValue())) ) {
 			/*
 			 * uma declaração de variável. 'lexer.token' é o tipo da variável
 			 * 
@@ -999,11 +999,31 @@ public class Compiler {
 			lexer.nextToken();
 			Expr right = simpleExpr();
 			
-			// Validacao de ==
-			
-			
-			// Validacao de !=
-			
+			// Validacao de == e !=
+			if(op == Symbol.EQ || op == Symbol.NEQ ) {
+				if( left.getType() != right.getType() ) {
+					if(left.getType() instanceof KraClass && right.getType() instanceof KraClass ) {
+						
+						if( !(left instanceof NullExpr) && !(right instanceof NullExpr) ) {
+							boolean isSubtype = false;
+							if(isSubType((KraClass) left.getType(), (KraClass) right.getType())) {
+								isSubtype = true;
+							}
+							
+							if(isSubType((KraClass) right.getType(), (KraClass) left.getType())) {
+								isSubtype = true;
+							}
+							
+							if(isSubtype == false) {
+								signalError.showError("Incompatible types cannot be compared with '"+ op.toString() +"' because the result will always be 'false'");
+							}
+						}
+						
+					} else if( !( ( left.getType() == Type.stringType && right instanceof NullExpr ) || ( right.getType() == Type.stringType && left instanceof NullExpr ) ) ) {
+						signalError.showError("Incompatible types cannot be compared with '"+ op.toString() +"' because the result will always be 'false'");
+					}
+				}
+			}
 			
 			left = new CompositeExpr(left, op, right);
 		}
