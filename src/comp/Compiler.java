@@ -1338,7 +1338,7 @@ public class Compiler {
 				// only 'this'
 				// retorne um objeto da ASA que representa 'this'
 				// confira se não estamos em um método estático
-				return null; // TODO: Descobrir o que retornar?
+				return new ThisExpr (currentClass); // TODO: Descobrir o que retornar?
 			}
 			else {
 				lexer.nextToken();
