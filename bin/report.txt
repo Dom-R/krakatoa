@@ -281,7 +281,7 @@ The 'ce' message is:      "Identifier expected"
 
 
 ER-SEM49.KRA
-The compiler message was: "Identifier expected"
+The compiler message was: "Class expected"
 The 'ce' message is:      "Class expected"
 
 
@@ -486,7 +486,7 @@ The 'ce' message is:      "Missing ';'"
 
 
 ER-SIN23.KRA
-The compiler message was: "} expected"
+The compiler message was: "Statement expected"
 The 'ce' message is:      "Statement expected"
 
 
@@ -526,7 +526,7 @@ The 'ce' message is:      "Unknown character '#'"
 
 
 ER-SIN31.KRA
-The compiler message was: "Method 'run' was not found in class 'Program'"
+The compiler message was: "'public', 'private', or '}' expected"
 The 'ce' message is:      "'public', 'private', or '}' expected"
 
 

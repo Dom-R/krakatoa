@@ -148,7 +148,7 @@ public class Compiler {
 		if ( lexer.token == Symbol.EXTENDS ) {
 			lexer.nextToken();
 			if ( lexer.token != Symbol.IDENT )
-				signalError.show(ErrorSignaller.ident_expected);
+				signalError.showError("Class expected");
 			String superclassName = lexer.getStringValue();
 			
 			// Validacao se classe esta se extendendo
@@ -161,7 +161,7 @@ public class Compiler {
 			
 			// Não tem teste se a superclasse existe ou não
 			if(superclass == null) {
-				// signalError.showError("No superclass with name:" + superclassName
+				signalError.showError("No superclass with name:" + superclassName);
 			}
 			
 			currentClass.setSuperclass(superclass);
@@ -212,6 +212,10 @@ public class Compiler {
 					currentClass.addInstanceVariable(i);
 				}
 			}
+		}
+		
+		if(lexer.token == Symbol.SEMICOLON) {
+			signalError.showError("'public', 'private', or '}' expected");
 		}
 		
 		// Verificacao se classe Program possui metodo run
@@ -524,7 +528,7 @@ public class Compiler {
 		Symbol tk;
 		// statements always begin with an identifier, if, read, write, ...
 		while ((tk = lexer.token) != Symbol.RIGHTCURBRACKET
-				&& tk != Symbol.ELSE)
+				/*&& tk != Symbol.ELSE*/)
 			statementList.addElement(statement());
 		
 		return statementList;
