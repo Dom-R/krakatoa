@@ -1339,10 +1339,14 @@ public class Compiler {
 									Method tempMethod = iterator.next();
 									if(tempMethod.getName().equals(id)) {
 										
-										// TODO: verifica se parametros sao iguais ao do metodo
-										
-										method2 = tempMethod;
+										// Verifica se parametros sao iguais ao do metodo
+										if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
+											method2 = tempMethod;
+										} else {
+											signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+										}
 										break;
+										
 									}
 								}
 							} else {
@@ -1412,7 +1416,7 @@ public class Compiler {
 								//System.out.println("Metodos privados: " + tempMethod.getName());
 								if(tempMethod.getName().equals(id)) {
 									
-									// TODO: verifica se parametros sao iguais ao do metodo
+									// Verifica se parametros sao iguais ao do metodo
 									if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
 										method3 = tempMethod;
 									} else {
@@ -1431,9 +1435,12 @@ public class Compiler {
 								//System.out.println("Metodos publicos: " + tempMethod.getName());
 								if(tempMethod.getName().equals(id)) {
 									
-									// TODO: verifica se parametros sao iguais ao do metodo
-									
-									method3 = tempMethod;
+									// Verifica se parametros sao iguais ao do metodo
+									if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
+										method3 = tempMethod;
+									} else {
+										signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+									}
 									break;
 								}
 							}
@@ -1481,7 +1488,7 @@ public class Compiler {
 										Method tempMethod = iterator.next();
 										if(tempMethod.getName().equals(methodName)) {
 											
-											// TODO: verifica se parametros sao iguais ao do metodo
+											// Verifica se parametros sao iguais ao do metodo
 											if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
 												method4 = tempMethod;
 											} else {
@@ -1573,7 +1580,7 @@ public class Compiler {
 				if(expr.getType() != param.getType()) {
 					
 					if( expr.getType() instanceof KraClass && param.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
-						if(!isSubType((KraClass) expr.getType(), (KraClass) param.getType())) {
+						if(!isSubType((KraClass) param.getType(), (KraClass) expr.getType())) {
 							signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
 							return false;
 						}

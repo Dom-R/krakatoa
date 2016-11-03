@@ -1,13 +1,9 @@
 Relatório do Compilador
 
-1 de um total de 122 erros que deveriam ser sinalizados não o foram (0%)
+0 de um total de 122 erros que deveriam ser sinalizados não o foram (0%)
 0 erros foram sinalizados na linha errada (0%)
 0 erros foram sinalizados em 63 arquivos sem erro (0%)
-
-Erros que deveriam ser sinalizados mas não foram:
-
-ER-SEM40.KRA, 40, Type error: the type of the real parameter is not subclass of the type of the formal parameter (comp.Compiler.factor())
-
+Todos os erros que deveriam ter sido sinalizados o foram
 Um ou mais arquivos de teste tinham erros, mas estes foram sinalizados nos números de linhas corretos
 O compilador não sinalizou nenhum erro que não deveria ter sinalizado
 ######################################################
@@ -238,6 +234,11 @@ The 'ce' message is:      "Type error: type of the right-hand side of the assign
 ER-SEM39.KRA
 The compiler message was: "Type error: type of the right-hand side of the assignment is not a subclass of the left-hand side"
 The 'ce' message is:      "Type error: type of the expression returned is not subclass of the method return type"
+
+
+ER-SEM40.KRA
+The compiler message was: "Type error: the type of the real parameter is not subclass of the type of the formal parameter"
+The 'ce' message is:      "Type error: the type of the real parameter is not subclass of the type of the formal parameter"
 
 
 ER-SEM41.KRA
@@ -620,3 +621,4 @@ The compiler message was: "'while' expected"
 The 'ce' message is:      "'while' expected"
 
 
+Para os casos de teste que você utilizou, o compilador está correto
