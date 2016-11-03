@@ -1413,9 +1413,13 @@ public class Compiler {
 								if(tempMethod.getName().equals(id)) {
 									
 									// TODO: verifica se parametros sao iguais ao do metodo
-									
-									method3 = tempMethod;
+									if(compareExprListParamList(exprList, tempMethod.getParamList()) ) {
+										method3 = tempMethod;
+									} else {
+										signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+									}
 									break;
+									
 								}
 							}
 							
@@ -1484,6 +1488,7 @@ public class Compiler {
 												signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
 											}
 											break;
+											
 										}
 									}
 								} else {
@@ -1557,24 +1562,30 @@ public class Compiler {
 	
 	public boolean compareExprListParamList(ExprList exprList, ParamList paramList) {
 		
-		Iterator<Expr> iterExprList = exprList.getExprListIterator();
-		Iterator<Parameter> iterParamList = paramList.elements();
-		
-		while(iterExprList.hasNext() && iterParamList.hasNext()) {
-			Expr expr = iterExprList.next();
-			Parameter param = iterParamList.next();
+		if(exprList != null && paramList != null) {
+			Iterator<Expr> iterExprList = exprList.getExprListIterator();
+			Iterator<Parameter> iterParamList = paramList.elements();
 			
-			if(expr.getType() != param.getType()) {
+			while(iterExprList.hasNext() && iterParamList.hasNext()) {
+				Expr expr = iterExprList.next();
+				Parameter param = iterParamList.next();
 				
-				if( expr.getType() instanceof KraClass && param.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
-					if(!isSubType((KraClass) expr.getType(), (KraClass) param.getType())) {
-						signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
-						return false;
+				if(expr.getType() != param.getType()) {
+					
+					if( expr.getType() instanceof KraClass && param.getType() instanceof KraClass && !(expr instanceof NullExpr) ) {
+						if(!isSubType((KraClass) expr.getType(), (KraClass) param.getType())) {
+							signalError.showError("Type error: the type of the real parameter is not subclass of the type of the formal parameter");
+							return false;
+						}
 					}
+					
 				}
 				
 			}
-			
+		} else if(exprList == null && paramList == null) {
+			return true;
+		} else {
+			return false;
 		}
 		
 		return true;

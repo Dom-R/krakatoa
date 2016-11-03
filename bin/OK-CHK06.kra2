@@ -14,3 +14,19 @@ class B {
    public void m() {
    }
 }
+class C {
+   private B b;
+   public void m() {
+      this.b.m();
+   }
+   public B get() {
+      return this.b;
+   }
+}
+class Program {
+   public void run() {
+      C c;
+      c = null;
+      c.m();
+   }
+}

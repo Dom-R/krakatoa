@@ -7,3 +7,22 @@ class A {
       return this.n;
    }
 }
+class Program {
+   private A a;
+   public void print() {
+      write( this.a.get() );
+   }
+   public A get() {
+      return this.a;
+   }
+   public void run() {
+      writeln( "" );
+      writeln( "Ok-ger21" );
+      writeln( "The output should be :" );
+      writeln( "0" );
+      write( "0" );
+   }
+   private void set( A a ) {
+      this.a = a;
+   }
+}
