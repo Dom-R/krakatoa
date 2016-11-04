@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 public class StatementAssert extends Statement {
@@ -6,7 +12,7 @@ public class StatementAssert extends Statement {
 		this.lineNumber = lineNumber;
 		this.message = message;
 	}
-	
+
 	@Override
 	public void genC(PW pw) {
 		pw.printIdent("if ( !( ");
@@ -17,7 +23,7 @@ public class StatementAssert extends Statement {
 		pw.sub();
 		pw.printlnIdent("}");
 	}
-	
+
 	@Override
 	public void genKra(PW pw) {
 		pw.printIdent("if ( !( ");

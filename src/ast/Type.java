@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 abstract public class Type {
@@ -18,7 +24,7 @@ abstract public class Type {
     }
 
     abstract public String getCname();
-    
+
     abstract public String getKraname();
 
     private String name;

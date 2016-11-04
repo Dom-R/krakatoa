@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.Iterator;
@@ -7,16 +13,16 @@ public class StatementDoWhile extends Statement {
 		this.expr = expr;
 		this.statementList = statementList;
 	}
-	
+
 	@Override
 	public void genC(PW pw) {
 	}
-	
+
 	@Override
 	public void genKra(PW pw) {
 		pw.printlnIdent("do {");
 		pw.add();
-		
+
 		Iterator<Statement> s = statementList.elements();
 		while(s.hasNext()) {
 			/*
@@ -30,10 +36,10 @@ public class StatementDoWhile extends Statement {
 			/*
 			* Fim Debug pois alguns statements ainda retornam null
 			*/
-			   
+
 			//s.next().genKra(pw);
 		}
-		   
+
 		pw.sub();
 		pw.printIdent("}	while(");
 		expr.genKra(pw, false);

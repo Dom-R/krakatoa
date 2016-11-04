@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package lexer;
 
 import java.util.*;
@@ -55,13 +61,13 @@ public class Lexer {
 		keywordsTable.put( "extends", Symbol.EXTENDS );
 		keywordsTable.put( "assert", Symbol.ASSERT);
 		*/
-		
+
 		for ( Symbol s : Symbol.values() ) {
 			String kw = s.toString();
-			if ( Character.isAlphabetic(kw.charAt(0)) ) 
+			if ( Character.isAlphabetic(kw.charAt(0)) )
 				keywordsTable.put( s.toString(), s);
 		}
-		
+
 
 	}
 
@@ -352,7 +358,7 @@ public class Lexer {
     public String getLiteralStringValue() {
        return literalStringValue;
     }
-    
+
 	public String getMetaobjectName() {
 		return metaobjectName;
 	}

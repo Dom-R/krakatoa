@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 public class TypeBoolean extends Type {
@@ -8,7 +14,7 @@ public class TypeBoolean extends Type {
    public String getCname() {
       return "int";
    }
-   
+
    public String getKraname() {
 	   return "boolean";
    }

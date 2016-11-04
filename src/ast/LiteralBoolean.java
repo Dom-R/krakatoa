@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 public class LiteralBoolean extends Expr {
@@ -5,7 +11,7 @@ public class LiteralBoolean extends Expr {
     public LiteralBoolean( boolean value ) {
         this.value = value;
     }
-    
+
     public String getName() {
     	if(value) {
     		return "true";
@@ -18,7 +24,7 @@ public class LiteralBoolean extends Expr {
 	public void genC( PW pw, boolean putParenthesis ) {
        pw.print( value ? "1" : "0" );
     }
-    
+
     @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub

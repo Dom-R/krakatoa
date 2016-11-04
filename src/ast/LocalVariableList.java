@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.*;
@@ -25,7 +31,7 @@ public class LocalVariableList extends Statement {
 	@Override
 	public void genC(PW pw) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

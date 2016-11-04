@@ -1,5 +1,11 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 /**
-  
+
  */
 package ast;
 
@@ -12,9 +18,9 @@ import java.util.ArrayList;
  *     public void run() { } <br>
  * end <br>
  * </code>
- * 
-   @author José
-   
+ *
+   @author Josï¿½
+
  */
 public class MetaobjectCall {
 
@@ -22,7 +28,7 @@ public class MetaobjectCall {
 		this.name = name;
 		this.paramList = paramList;
 	}
-	
+
 	public ArrayList<Object> getParamList() {
 		return paramList;
 	}

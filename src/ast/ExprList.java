@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.*;
@@ -11,7 +17,7 @@ public class ExprList {
     public void addElement( Expr expr ) {
         exprList.add(expr);
     }
-    
+
     public Iterator<Expr> getExprListIterator() {
     	return exprList.iterator();
     }
@@ -25,12 +31,12 @@ public class ExprList {
                 pw.print(", ");
         }
     }
-    
+
     public void genKra( PW pw ) {
 
         int size = exprList.size();
         for ( Expr e : exprList ) {
-        	e.genKra(pw, false); //Remover comentário depois
+        	e.genKra(pw, false); //Remover comentï¿½rio depois
             if ( --size > 0 )
                 pw.print(", ");
         }

@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import lexer.*;
@@ -11,7 +17,7 @@ public class CompositeExpr extends Expr {
         oper = poper;
         right = pright;
     }
-    
+
     @Override
 	public void genC( PW pw, boolean putParenthesis ) {
         if ( putParenthesis )
@@ -59,7 +65,7 @@ public class CompositeExpr extends Expr {
         arrayOper.put(Symbol.AND, "&&");
         arrayOper.put(Symbol.OR, "||");
     }
-    
+
 	@Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
@@ -76,13 +82,13 @@ public class CompositeExpr extends Expr {
 		if ( putParenthesis )
 		  pw.print(")");
 	}
-	
+
 	public String getName() {
 		String nome = "";
 		nome += left.getName();
 		nome += " " + arrayOper.get(oper) + " ";
 		nome += right.getName();
-		
+
 		return nome;
 	}
 }

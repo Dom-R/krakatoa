@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 public class StatementWhile extends Statement {
@@ -5,7 +11,7 @@ public class StatementWhile extends Statement {
 		this.expr = expr;
 		this.statement = statement;
 	}
-	
+
 	@Override
 	public void genC(PW pw) {
 		pw.printIdent("while ( ");
@@ -15,7 +21,7 @@ public class StatementWhile extends Statement {
 		statement.genC(pw);
 		pw.sub();
 	}
-	
+
 	@Override
 	public void genKra(PW pw) {
 		pw.printIdent("while ( ");
@@ -26,9 +32,9 @@ public class StatementWhile extends Statement {
 			pw.print("\n");
 			pw.add();
 		}
-			
+
 		statement.genKra(pw);
-		
+
 		//pw.sub();
 		if ( ! (statement instanceof StatementComposite) )
 			pw.sub();

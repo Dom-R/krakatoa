@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 public class Variable {
@@ -6,9 +12,9 @@ public class Variable {
         this.name = name;
         this.type = type;
     }
-    
+
     public void genKra(PW pw) {
-    	
+
     }
 
     public String getName() { return name; }

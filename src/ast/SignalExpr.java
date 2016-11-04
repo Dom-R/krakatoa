@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import lexer.*;
@@ -23,7 +29,7 @@ public class SignalExpr extends Expr {
 	public Type getType() {
        return expr.getType();
     }
-    
+
     @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
@@ -34,7 +40,7 @@ public class SignalExpr extends Expr {
          if ( putParenthesis )
             pw.print(")");
 	}
-    
+
     public String getName() {
  	   String nome = (oper == Symbol.PLUS ? "+" : "-");
  	   nome += expr.getName();

@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.*;
@@ -5,7 +11,7 @@ import comp.CompilationError;
 
 public class Program {
 
-	public Program(ArrayList<KraClass> classList, ArrayList<MetaobjectCall> metaobjectCallList, 
+	public Program(ArrayList<KraClass> classList, ArrayList<MetaobjectCall> metaobjectCallList,
 			       ArrayList<CompilationError> compilationErrorList) {
 		this.classList = classList;
 		this.metaobjectCallList = metaobjectCallList;
@@ -21,7 +27,7 @@ public class Program {
 
 	public void genC(PW pw) {
 	}
-	
+
 	public ArrayList<KraClass> getClassList() {
 		return classList;
 	}
@@ -30,7 +36,7 @@ public class Program {
 	public ArrayList<MetaobjectCall> getMetaobjectCallList() {
 		return metaobjectCallList;
 	}
-	
+
 
 	public boolean hasCompilationErrors() {
 		return compilationErrorList != null && compilationErrorList.size() > 0 ;
@@ -40,11 +46,11 @@ public class Program {
 		return compilationErrorList;
 	}
 
-	
+
 	private ArrayList<KraClass> classList;
 	private ArrayList<MetaobjectCall> metaobjectCallList;
-	
+
 	ArrayList<CompilationError> compilationErrorList;
 
-	
+
 }

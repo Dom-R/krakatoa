@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package comp;
 import java.io.*;
 import java.util.ArrayList;
@@ -83,7 +89,7 @@ public class ErrorSignaller {
     private Lexer lexer;
     private PrintWriter out;
     private boolean foundCompilerError;
-    
+
     private ArrayList<CompilationError> compilationErrorList;
 
 }

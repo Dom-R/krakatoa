@@ -1,9 +1,15 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package comp;
 
 /**
  * a compilation error
- * 
-   @author José
+ *
+   @author Josï¿½
  */
 public class CompilationError {
 
@@ -13,7 +19,7 @@ public class CompilationError {
 		this.lineNumber = lineNumber;
 		this.lineWithError = lineWithError;
 	}
-	
+
 	private static final long	serialVersionUID	= 1L;
 
 	public String getMessage() {

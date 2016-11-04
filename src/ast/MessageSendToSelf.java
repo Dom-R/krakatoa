@@ -1,17 +1,23 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.*;
 
 public class MessageSendToSelf extends MessageSend {
-    
-    public Type getType() { 
+
+    public Type getType() {
         return method.getType();
     }
 
     public void genC( PW pw, boolean putParenthesis ) {
-        
+
     }
-    
+
     @Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
@@ -20,23 +26,23 @@ public class MessageSendToSelf extends MessageSend {
     	} else {
     		pw.print("this." + variable.getName() + "." + method.getName() + "(" );
     	}
-    		
+
 		if(parameterList != null) parameterList.genKra(pw);
 		pw.print(")");
 	}
-    
+
     public MessageSendToSelf(Method method, ExprList parameterList) {
     	this.variable = null;
     	this.method = method;
     	this.parameterList = parameterList;
     }
-    
+
     public MessageSendToSelf(Variable variable, Method method, ExprList parameterList) {
     	this.variable = variable;
     	this.method = method;
     	this.parameterList = parameterList;
     }
-    
+
     public String getName() {
     	String nome = "this.";
     	if(variable == null) {
@@ -44,7 +50,7 @@ public class MessageSendToSelf extends MessageSend {
     	} else {
     		nome += variable.getName() + "." + method.getName() + "(";
     	}
-    	
+
     	if(parameterList != null) {
     		Iterator<Expr> iter = parameterList.getExprListIterator();
     		while(iter.hasNext()) {
@@ -55,15 +61,15 @@ public class MessageSendToSelf extends MessageSend {
     			}
     		}
     	}
-    	
+
     	nome += ")";
-    	
+
     	return nome;
-    	
+
     }
-    
+
     private Variable variable;
     private ExprList parameterList;
     private Method method;
-    
+
 }

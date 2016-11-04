@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 
 package ast;
 
@@ -28,7 +34,7 @@ public class UnaryExpr extends Expr {
 		}
 		expr.genC(pw, false);
 	}
-	
+
 	@Override
 	public void genKra(PW pw, boolean putParenthesis) {
 		// TODO Auto-generated method stub
@@ -53,7 +59,7 @@ public class UnaryExpr extends Expr {
 	public Type getType() {
 		return expr.getType();
 	}
-	
+
 	public String getName() {
 		String nome = "";
 		switch (op) {

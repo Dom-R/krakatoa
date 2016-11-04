@@ -1,3 +1,9 @@
+/*-------------------------------------------------------------------------------------------------------------------------
+
+Dominik Reller - 587516
+Luan Gustavo Maia Dias - 587737
+
+-------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
 import java.util.*;
@@ -19,7 +25,7 @@ public class StatementList {
     public int getSize() {
         return statementList.size();
     }
-    
+
     public void genKra(PW pw) {
     	for ( Statement stmt : statementList ) {
     		stmt.genKra(pw);
