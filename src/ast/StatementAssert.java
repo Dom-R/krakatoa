@@ -26,13 +26,11 @@ public class StatementAssert extends Statement {
 
 	@Override
 	public void genKra(PW pw) {
-		pw.printIdent("if ( !( ");
+		pw.printIdent("assert ");
 		expr.genKra(pw, false);
-		pw.println(" ) ) {");
-		pw.add();
-		pw.printlnIdent("System.out.println(\"" + message +  "\");");
-		pw.sub();
-		pw.printlnIdent("}");
+		pw.print(", \"");
+		pw.print(message);
+		pw.println("\";");
 	}
 
 	public Expr getExpr() {

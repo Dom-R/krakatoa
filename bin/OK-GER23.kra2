@@ -11,9 +11,7 @@ class Program {
       do {
          n = (n) + 1;
       }	while(false);
-      if ( !( (n) == 11 ) ) {
-         System.out.println("'do-while' statement with 'false' as expression'");
-      }
+      assert (n) == 11, "'do-while' statement with 'false' as expression'";
       n = 10;
       int sum;
       sum = 0;
@@ -24,8 +22,6 @@ class Program {
          }	while((i) < (n));
          j = (j) + 1;
       }	while((j) < (n));
-      if ( !( (sum) == 100 ) ) {
-         System.out.println("Nested 'do-while' statement with two indexes");
-      }
+      assert (sum) == 100, "Nested 'do-while' statement with two indexes";
    }
 }
