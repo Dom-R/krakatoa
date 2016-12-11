@@ -8,19 +8,24 @@ package ast;
 
 public class VariableExpr extends Expr {
 
-    public VariableExpr( Variable v, boolean isThis ) {
+    public VariableExpr( Variable v, KraClass thisClass ) {
         this.v = v;
-        this.isThis = isThis;
+        this.thisClass = thisClass;
     }
 
     public void genC( PW pw, boolean putParenthesis ) {
-    	if (putParenthesis == true)
-    		pw.print("(");
+    	if( v != null ) {
+    		if (putParenthesis == true)
+        		pw.print("(");
 
-        pw.print( v.getName() );
+    		if (thisClass != null)
+        		pw.print("this->_" + thisClass.getName());
 
-        if (putParenthesis == true)
-    		pw.print(")");
+    		pw.print("_" + v.getName() );
+
+    		if (putParenthesis == true)
+        		pw.print(")");
+    	}
     }
 
     public void genKra( PW pw, boolean putParenthesis ) {
@@ -29,7 +34,7 @@ public class VariableExpr extends Expr {
     		if (putParenthesis == true)
         		pw.print("(");
 
-    		if (isThis == true)
+    		if (thisClass != null)
         		pw.print("this.");
 
     		pw.print( v.getName() );
@@ -48,5 +53,5 @@ public class VariableExpr extends Expr {
     }
 
     private Variable v;
-    private boolean isThis;
+    private KraClass thisClass;
 }

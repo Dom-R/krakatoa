@@ -901,7 +901,11 @@ public class Compiler {
 				signalError.showError("'int' or 'String' expression expected");
 			}
 
-			variableExprList.add(new VariableExpr(variable, flagThis));
+			if(flagThis) {
+				variableExprList.add(new VariableExpr(variable, currentClass));
+			} else {
+				variableExprList.add(new VariableExpr(variable, null));
+			}
 
 			lexer.nextToken();
 			if ( lexer.token == Symbol.COMMA )
@@ -1274,7 +1278,7 @@ public class Compiler {
 					signalError.showError("Identifier '" + firstId + "' was not found");
 				}
 
-				VariableExpr variableExpr = new VariableExpr(v, false);
+				VariableExpr variableExpr = new VariableExpr(v, null);
 				return variableExpr;
 			}
 			else { // Id "."
@@ -1537,7 +1541,7 @@ public class Compiler {
 						}
 					}
 
-					VariableExpr variableExpr = new VariableExpr(variavel, true);
+					VariableExpr variableExpr = new VariableExpr(variavel, currentClass);
 					return variableExpr;
 				}
 			}
