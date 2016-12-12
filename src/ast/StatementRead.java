@@ -7,6 +7,7 @@ Luan Gustavo Maia Dias - 587737
 package ast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class StatementRead extends Statement {
 	public StatementRead(ArrayList<VariableExpr> variableExprList) {
@@ -16,7 +17,36 @@ public class StatementRead extends Statement {
 	@Override
 	public void genC(PW pw) {
 		// TODO Auto-generated method stub
-		pw.printlnIdent("-> Implementar genC de StatementRead <-");
+		Iterator<VariableExpr> iter = variableExprList.iterator();
+		while(iter.hasNext()) {
+			VariableExpr var = iter.next();
+			
+			pw.printlnIdent("{");
+			pw.add();
+			pw.printlnIdent("char __s[512];");
+			pw.printlnIdent("gets(__s);");
+			
+			// Diferencia entre int e string 
+			if(var.getType() == Type.intType) {
+				pw.printIdent("sscanf(__s, \"%d\", &");
+				
+				if(var.getThisClass() != null) {
+					pw.print("this->_" + var.getThisClass().getName());
+				}
+				
+				var.genC(pw, false);
+				pw.println(");");
+			} else {
+				var.genC(pw, false);
+				pw.printlnIdent(" = malloc(strlen(__s) + 1);");
+				pw.printIdent("strcpy(");
+				var.genC(pw, false);
+				pw.println(", __s);");
+			}
+			
+			pw.sub();
+			pw.printlnIdent("}");
+		}
 	}
 
 	@Override

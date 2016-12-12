@@ -51,6 +51,10 @@ public class VariableExpr extends Expr {
     public String getName() {
     	return v.getName();
     }
+    
+    public KraClass getThisClass() {
+    	return thisClass;
+    }
 
     private Variable v;
     private KraClass thisClass;

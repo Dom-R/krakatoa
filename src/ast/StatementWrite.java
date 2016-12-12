@@ -25,7 +25,7 @@ public class StatementWrite extends Statement {
 		while(iter.hasNext()) {
 			Expr expr = iter.next();
 			if(expr.getType() == Type.stringType) {
-				pw.printIdent("puts( ");
+				pw.printIdent("puts(");
 			} else {
 				pw.printIdent("printf(\"%");
 				switch(expr.getType().getName()) {
