@@ -15,7 +15,7 @@ public class StatementComposite extends Statement {
 	public void genC(PW pw) {
 		pw.println(" {");
 		pw.add();
-		//statementList.genC(pw);
+		statementList.genC(pw);
 		pw.sub();
 		pw.printlnIdent("}");
 	}

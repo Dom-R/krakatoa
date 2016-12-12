@@ -17,7 +17,7 @@ public class LiteralClass extends Expr {
     }
 
     public void genC( PW pw, boolean putParenthesis ) {
-        pw.printIdent("" + value.getCname());
+        pw.print("new_" + value.getName() + "()");
     }
 
     @Override
