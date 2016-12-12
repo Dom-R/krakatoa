@@ -31,7 +31,17 @@ public class LocalVariableList extends Statement {
 	@Override
 	public void genC(PW pw) {
 		// TODO Auto-generated method stub
-
+		pw.printIdent(localList.get(0).getType().getCname() + " ");
+		// TODO Auto-generated method stub
+		Iterator<Variable> iter = elements();
+		while(iter.hasNext()) {
+			Variable v = iter.next();
+			pw.print(v.getCname());
+			if(iter.hasNext()) {
+				pw.print(", ");
+			}
+		}
+		pw.println(";");
 	}
 
 	@Override

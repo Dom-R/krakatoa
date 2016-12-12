@@ -17,15 +17,35 @@ public class StatementIf extends Statement {
 	public void genC(PW pw) {
 		pw.printIdent("if ( ");
 		expr.genC(pw, false);
-		pw.println(" )");
-		pw.add();
-		statementThen.genC(pw);
-		pw.sub();
-		if( statementElse != null ) {
-			pw.println("else");
+		pw.print(" )");
+
+		//pw.add();
+		if ( ! (statementThen instanceof StatementComposite) ) {
+			pw.print("\n");
 			pw.add();
-			statementElse.genC(pw);
+		}
+
+		statementThen.genC(pw);
+
+		//pw.sub();
+		if ( ! (statementThen instanceof StatementComposite) )
 			pw.sub();
+
+		if( statementElse != null ) {
+			pw.printIdent("else");
+
+			if ( ! (statementElse instanceof StatementComposite) ) {
+				pw.print("\n");
+				pw.add();
+			}
+			//pw.add();
+
+			statementElse.genC(pw);
+
+			//pw.sub();
+			if ( ! (statementElse instanceof StatementComposite) )
+				pw.sub();
+
 		}
 	}
 

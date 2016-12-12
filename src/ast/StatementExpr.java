@@ -15,7 +15,13 @@ public class StatementExpr extends Statement {
 
 	@Override
 	public void genC(PW pw) {
-		pw.printlnIdent("Implementar genKra de StatementExpr");
+		pw.printIdent("");
+		leftExpr.genC(pw, false);
+		if(rightExpr != null) {
+			pw.print(" = ");
+			rightExpr.genC(pw, false);
+		}
+		pw.println(";");
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class StatementRead extends Statement {
 	@Override
 	public void genC(PW pw) {
 		// TODO Auto-generated method stub
-
+		pw.printlnIdent("-> Implementar genC de StatementRead <-");
 	}
 
 	@Override

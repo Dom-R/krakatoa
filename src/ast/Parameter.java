@@ -16,5 +16,9 @@ public class Parameter extends Variable {
     public void genKra(PW pw) {
     	pw.print(getType().getKraname() + " " + getName());
     }
+    
+    public void genC(PW pw) {
+    	pw.print(getType().getCname() + " " + getCname());
+    }
 
 }

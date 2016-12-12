@@ -26,6 +26,50 @@ public class Program {
 	}
 
 	public void genC(PW pw) {
+		//
+		// Gera cabecalho
+		//
+		pw.printlnIdent("#include <malloc.h>");
+		pw.printlnIdent("#include <stdlib.h>");
+		pw.printlnIdent("#include <stdio.h>");
+		pw.println();
+		pw.printlnIdent("typedef int boolean;");
+		pw.printlnIdent("#define true 1");
+		pw.printlnIdent("#define false 0");
+		pw.println();
+		pw.printlnIdent("typedef");
+		pw.add();
+		pw.printlnIdent("void (*Func)();");
+		pw.sub();
+		//
+		//
+		//
+		
+		//
+		// geracao de codigo para cada classe
+		//
+		for( KraClass c : classList ) {
+			pw.println();
+			c.genC(pw);
+		}
+		//
+		//
+		//
+		
+		pw.println();
+		
+		//
+		// gera main
+		//
+		pw.printlnIdent("int main() {");
+		pw.add();
+		pw.printlnIdent("_class_Program *program;");
+		pw.println();
+		pw.printlnIdent("program = new_Program();");
+		pw.printlnIdent("( ( void (*)(_class_Program *) ) program->vt[ACHAR NUMERO DO METODO RUN E COLOCAR AQUI] )(program);");
+		pw.printlnIdent("return 0;");
+		pw.sub();
+		pw.printlnIdent("}");
 	}
 
 	public ArrayList<KraClass> getClassList() {

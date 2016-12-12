@@ -74,6 +74,44 @@ public class Method {
    /* Fim validacao para While */
    /****************************/
 
+   public void genC(PW pw, KraClass currentClass) {
+	   pw.printIdent( type.getCname() + " _" + currentClass.getName() + "_" + name + "( " + currentClass.getCname() + "this" );
+	   
+	   // Outros parametros
+	   if(paramList != null) {
+		   Iterator<Parameter> p = paramList.elements();
+		   while(p.hasNext()) {
+			   pw.print(", ");
+			   p.next().genC(pw);
+		   }
+	   }
+	   pw.print(" ");
+	   
+	   pw.println(") {");
+	   pw.add();
+	   
+	   // statements
+	   Iterator<Statement> s = statementList.elements();
+	   while(s.hasNext()) {
+		   /*
+		    * Debug pois alguns statements ainda retornam null
+		    */
+		   Statement stmt = s.next();
+		   if(stmt != null)
+			   stmt.genC(pw);
+		   else
+			   System.out.println("Debug: Statement Null!");
+		   /*
+		    * Fim Debug pois alguns statements ainda retornam null
+		    */
+
+		   //s.next().genKra(pw);
+	   }
+	   
+	   pw.sub();
+	   pw.printlnIdent("}");
+   }
+   
    public void genKra(PW pw) {
 	   pw.printIdent(qualifier + " " + type.getKraname() + " " + name + "(");
 

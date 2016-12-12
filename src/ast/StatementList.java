@@ -25,6 +25,12 @@ public class StatementList {
     public int getSize() {
         return statementList.size();
     }
+    
+    public void genC(PW pw) {
+    	for ( Statement stmt : statementList ) {
+    		stmt.genC(pw);
+    	}
+	}
 
     public void genKra(PW pw) {
     	for ( Statement stmt : statementList ) {

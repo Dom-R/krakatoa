@@ -16,6 +16,10 @@ public class Variable {
     public void genKra(PW pw) {
 
     }
+    
+    public String getCname() {
+    	return "_" + name;
+    }
 
     public String getName() { return name; }
 

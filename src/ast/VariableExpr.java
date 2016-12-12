@@ -21,7 +21,7 @@ public class VariableExpr extends Expr {
     		if (thisClass != null)
         		pw.print("this->_" + thisClass.getName());
 
-    		pw.print("_" + v.getName() );
+    		pw.print( v.getCname() );
 
     		if (putParenthesis == true)
         		pw.print(")");

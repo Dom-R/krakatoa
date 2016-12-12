@@ -15,5 +15,9 @@ public class InstanceVariable extends Variable {
     public void genKra(PW pw) {
     	pw.printlnIdent("private " + getType().getKraname() + " " + getName() + ";");
     }
+    
+    public void genC(PW pw, KraClass currentClass) {
+    	pw.printlnIdent(getType().getCname() + " _" + currentClass.getName() + "" + getCname() + ";");
+    }
 
 }
