@@ -6,6 +6,8 @@ Luan Gustavo Maia Dias - 587737
 -------------------------------------------------------------------------------------------------------------------------*/
 package ast;
 
+import java.util.Iterator;
+
 public class StatementWrite extends Statement {
 	public StatementWrite(ExprList exprList, boolean flagln) {
 		this.exprList = exprList;
@@ -19,9 +21,25 @@ public class StatementWrite extends Statement {
 
 	@Override
 	public void genC(PW pw) {
-		pw.printIdent("printf( "); //Arrumar aqui para pegar os tipos das vari�veis
-		exprList.genC (pw);
-		pw.println(" );");
+		Iterator<Expr> iter = exprList.getExprListIterator();
+		while(iter.hasNext()) {
+			Expr expr = iter.next();
+			if(expr.getType() == Type.stringType) {
+				pw.printIdent("puts( ");
+			} else {
+				pw.printIdent("printf(\"%");
+				switch(expr.getType().getName()) {
+					case "int":
+						pw.print("d");
+						break;
+					default:
+						pw.print("-> ERROR ON TYPE <-");
+				}
+				pw.print(" \", ");
+			}
+			expr.genC(pw, false);
+			pw.println(");");
+		}
 		if (flagln)
 			pw.println("printf(\"\n\" );");
 	}
