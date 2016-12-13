@@ -48,9 +48,13 @@ public class Program {
 		//
 		// geracao de codigo para cada classe
 		//
+		int programRunIndex = -1;
 		for( KraClass c : classList ) {
 			pw.println();
 			c.genC(pw);
+			
+			// Recupera indice do metodo run na classe Program
+			if(c.getName().equals("Program")) programRunIndex = c.getMethodTable().indexOf("run");
 		}
 		//
 		//
@@ -66,7 +70,7 @@ public class Program {
 		pw.printlnIdent("_class_Program *program;");
 		pw.println();
 		pw.printlnIdent("program = new_Program();");
-		pw.printlnIdent("( ( void (*)(_class_Program *) ) program->vt[ACHAR NUMERO DO METODO RUN E COLOCAR AQUI] )(program);");
+		pw.printlnIdent("( ( void (*)(_class_Program *) ) program->vt[" + programRunIndex + "] )(program);");
 		pw.printlnIdent("return 0;");
 		pw.sub();
 		pw.printlnIdent("}");
