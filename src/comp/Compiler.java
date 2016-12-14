@@ -323,7 +323,7 @@ public class Compiler {
 			}
 		}
 
-		currentMethod = new Method(name, type, qualifier);
+		currentMethod = new Method(name, type, qualifier, currentClass);
 
 		lexer.nextToken();
 		ParamList paramList = null;

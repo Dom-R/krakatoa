@@ -15,7 +15,7 @@ import lexer.*;
 
 public class Method {
 
-   public Method(String name, Type type, Symbol qualifier/*, ParamList paramList, StatementList statementList*/ ) {
+   public Method(String name, Type type, Symbol qualifier, KraClass methodClass/*, ParamList paramList, StatementList statementList*/ ) {
 	  this.name = name;
 	  this.type = type;
 	  this.qualifier = qualifier;
@@ -23,6 +23,7 @@ public class Method {
       this.statementList = null;
       this.hasReturn = false;
       this.whileCounter = 0;
+      this.methodClass = methodClass;
    }
 
    public void setParamList(ParamList paramList) {
@@ -156,6 +157,17 @@ public class Method {
    public Type getType() {
 	   return type;
    }
+   
+   public boolean isPublic() {
+	   if(qualifier == Symbol.PUBLIC) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public KraClass getMethodClass() {
+	   return methodClass;
+   }
 
    private String name;
    private Type type;
@@ -164,5 +176,6 @@ public class Method {
    private StatementList statementList;
    private boolean hasReturn;
    private int whileCounter;
+   private KraClass methodClass;
 
 }

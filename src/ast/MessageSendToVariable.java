@@ -15,7 +15,35 @@ public class MessageSendToVariable extends MessageSend {
     }
 
     public void genC( PW pw, boolean putParenthesis ) {
-
+    	if(method.isPublic()) {
+    		pw.print("( (" + method.getType().getCname() + " (*)(" + variable.getType().getCname());
+    		
+    		// Cast dos parametros adicionais
+    		if(parameterList != null) {
+	    		Iterator<Expr> iter = parameterList.getExprListIterator();
+	    		while(iter.hasNext()) {
+	    			pw.print(", ");
+	    			pw.print("" + iter.next().getType().getCname());
+	    		}
+    		}
+    		
+    		pw.print(") ) ");
+    		
+    		pw.print("_" + variable.getName() + "->vt[");
+    		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
+    		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
+    		pw.print("] )(_" + variable.getName());
+    		if(parameterList != null) pw.print(", ");
+    	} else {
+    		pw.println("");
+    		pw.print("-> Envio de metodo privado em messageSendToVariable <-");
+    		pw.print("-> Não tinha exemplo de como esse aqui funciona <-");
+    		pw.println("");
+    	}
+    	
+    	if(parameterList != null) parameterList.genC(pw);
+    	pw.print(")");
+    	
     }
 
     @Override

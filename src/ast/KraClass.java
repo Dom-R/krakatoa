@@ -148,7 +148,12 @@ public class KraClass extends Type {
 	   pw.add();
 	   pw.printlnIdent("Func *vt;");
 	   
-	   // Insere variaveis de instancia
+	   // Insere variaveis de instancia da superclasse
+	   if(superclass != null) {
+		   superclass.genCInstanceVariable(pw);
+	   }
+	   
+	   // Insere variaveis de instancia da classe
 	   Iterator<InstanceVariable> e = instanceVariableList.elements();
 	   while(e.hasNext()) {
 		   e.next().genC(pw, this);
@@ -266,6 +271,17 @@ public class KraClass extends Type {
 
 	   pw.sub();
 	   pw.println("}");
+   }
+   
+   // Metodo para printar variaveis de instancia de superclasses
+   private void genCInstanceVariable(PW pw) {
+	   if(superclass != null) {
+		   superclass.genCInstanceVariable(pw);
+	   }
+	   Iterator<InstanceVariable> e = instanceVariableList.elements();
+	   while(e.hasNext()) {
+		   e.next().genC(pw, this);
+	   }
    }
 
    //private String name;
