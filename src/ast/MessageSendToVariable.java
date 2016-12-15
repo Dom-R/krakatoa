@@ -33,15 +33,14 @@ public class MessageSendToVariable extends MessageSend {
     		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
     		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
     		pw.print("] )(_" + variable.getName());
-    		if(parameterList != null) pw.print(", ");
     	} else {
-    		pw.println("");
-    		pw.print("-> Envio de metodo privado em messageSendToVariable <-");
-    		pw.print("-> Não tinha exemplo de como esse aqui funciona <-");
-    		pw.println("");
+    		pw.print("_" + method.getMethodClass().getName() + "_" + method.getName() + "(_" +  variable.getName() );
     	}
-    	
-    	if(parameterList != null) parameterList.genC(pw);
+    	 
+    	if(parameterList != null) {
+    		pw.print(", ");
+    		parameterList.genC(pw);
+    	}
     	pw.print(")");
     	
     }

@@ -15,7 +15,57 @@ public class MessageSendToSelf extends MessageSend {
     }
 
     public void genC( PW pw, boolean putParenthesis ) {
-
+    	if(variable != null) {
+	    	if(method.isPublic()) {
+	    		pw.print("( (" + method.getType().getCname() + " (*)(" + variable.getType().getCname());
+	    		
+	    		// Cast dos parametros adicionais
+	    		if(parameterList != null) {
+		    		Iterator<Expr> iter = parameterList.getExprListIterator();
+		    		while(iter.hasNext()) {
+		    			pw.print(", ");
+		    			pw.print("" + iter.next().getType().getCname());
+		    		}
+	    		}
+	    		
+	    		pw.print(") ) ");
+	    		
+	    		pw.print("_" + variable.getName() + "->vt[");
+	    		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
+	    		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
+	    		pw.print("] )(_" + variable.getName());
+	    	} else {
+	    		pw.print("_" + method.getMethodClass().getName() + "_" + method.getName() + "(_" +  variable.getName() );
+	    	}
+    	} else {
+    		if(method.isPublic()) {
+	    		pw.print("( (" + method.getType().getCname() + " (*)(" + method.getMethodClass().getCname());
+	    		
+	    		// Cast dos parametros adicionais
+	    		if(parameterList != null) {
+		    		Iterator<Expr> iter = parameterList.getExprListIterator();
+		    		while(iter.hasNext()) {
+		    			pw.print(", ");
+		    			pw.print("" + iter.next().getType().getCname());
+		    		}
+	    		}
+	    		
+	    		pw.print(") ) ");
+	    		
+	    		pw.print("this" + "->vt[");
+	    		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
+	    		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
+	    		pw.print("] )( (" + method.getMethodClass().getCname() + ") this" );
+	    	} else {
+	    		pw.print("_" + method.getMethodClass().getName() + "_" + method.getName() + "( this");
+	    	}
+    	}
+    	 
+    	if(parameterList != null) {
+    		pw.print(", ");
+    		parameterList.genC(pw);
+    	}
+    	pw.print(")");
     }
 
     @Override
