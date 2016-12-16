@@ -16,6 +16,30 @@ public class StatementDoWhile extends Statement {
 
 	@Override
 	public void genC(PW pw) {
+		pw.printlnIdent("do {");
+		pw.add();
+
+		Iterator<Statement> s = statementList.elements();
+		while(s.hasNext()) {
+			/*
+			* Debug pois alguns statements ainda retornam null
+			*/
+			Statement stmt = s.next();
+			if(stmt != null)
+				stmt.genC(pw);
+			else
+				System.out.println("Debug: Statement Null!");
+			/*
+			* Fim Debug pois alguns statements ainda retornam null
+			*/
+
+			//s.next().genKra(pw);
+		}
+
+		pw.sub();
+		pw.printIdent("}	while(");
+		expr.genC(pw, false);
+		pw.println(");");
 	}
 
 	@Override

@@ -16,10 +16,18 @@ public class StatementWhile extends Statement {
 	public void genC(PW pw) {
 		pw.printIdent("while ( ");
 		expr.genC(pw, false);
-		pw.println(" )");
-		pw.add();
+		pw.print(" )");
+		//pw.add();
+		if ( ! (statement instanceof StatementComposite) ) {
+			pw.print("\n");
+			pw.add();
+		}
+
 		statement.genC(pw);
-		pw.sub();
+
+		//pw.sub();
+		if ( ! (statement instanceof StatementComposite) )
+			pw.sub();
 	}
 
 	@Override
