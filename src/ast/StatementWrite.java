@@ -35,13 +35,14 @@ public class StatementWrite extends Statement {
 					default:
 						pw.print("-> ERROR ON TYPE <-");
 				}
+				if (flagln)
+					pw.println("\\n");
 				pw.print(" \", ");
 			}
 			expr.genC(pw, false);
 			pw.println(");");
 		}
-		if (flagln)
-			pw.println("printf(\"\n\" );");
+		
 	}
 
 	@Override
