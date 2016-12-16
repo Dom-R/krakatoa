@@ -41,7 +41,7 @@ public class MessageSendToVariable extends MessageSend {
     		pw.print(", ");
     		parameterList.genC(pw);
     	}
-    	pw.print(")");
+    	pw.print(" )");
     	
     }
 

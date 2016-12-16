@@ -30,15 +30,12 @@ public class StatementRead extends Statement {
 			if(var.getType() == Type.intType) {
 				pw.printIdent("sscanf(__s, \"%d\", &");
 				
-				if(var.getThisClass() != null) {
-					pw.print("this->_" + var.getThisClass().getName());
-				}
-				
 				var.genC(pw, false);
 				pw.println(");");
 			} else {
+				pw.printIdent("");
 				var.genC(pw, false);
-				pw.printlnIdent(" = malloc(strlen(__s) + 1);");
+				pw.println(" = malloc(strlen(__s) + 1);");
 				pw.printIdent("strcpy(");
 				var.genC(pw, false);
 				pw.println(", __s);");

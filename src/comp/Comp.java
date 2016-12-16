@@ -253,9 +253,8 @@ public class Comp {
                if ( (lastIndex = filename.lastIndexOf('.')) == -1 )
                   lastIndex = filename.length();
                outputFileName = filename.substring(0, lastIndex);
-               if ( (lastIndex = filename.lastIndexOf('\\')) != -1 )
-            	   outputFileName = filename.substring(lastIndex + 1);
-
+               if ( (lastIndex = outputFileName.lastIndexOf('\\')) != -1 ) // José: Tive que alterar pois nao estava removendo .KRA do arquivo automaticamente
+            	   outputFileName = outputFileName.substring(lastIndex + 1); // José: Tive que alterar pois nao estava removendo .KRA do arquivo automaticamente
 
 
                FileOutputStream  outputStream;

@@ -21,7 +21,7 @@ public class MessageSendToSuper extends MessageSend {
     		pw.print(", ");
     		parameterList.genC(pw);
     	}
-    	pw.print(")");
+    	pw.print(" )");
     }
 
     @Override
