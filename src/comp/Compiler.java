@@ -1460,7 +1460,7 @@ public class Compiler {
 						pointedClass3 = pointedClass3.getSuperclass();
 					} while(method3 == null);
 
-					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(method3, exprList);
+					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(method3, exprList, currentClass);
 					return messageSendToSelf;
 				}
 				else if ( lexer.token == Symbol.DOT ) {
@@ -1522,7 +1522,7 @@ public class Compiler {
 						signalError.showError("Instance Variable '" + id + "' was not found");
 					}
 
-					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(variableClass, method4, exprList);
+					MessageSendToSelf messageSendToSelf = new MessageSendToSelf(variableClass, method4, exprList, currentClass);
 					return messageSendToSelf;
 				}
 				else {

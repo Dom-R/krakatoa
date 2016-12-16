@@ -30,10 +30,10 @@ public class MessageSendToSelf extends MessageSend {
 	    		
 	    		pw.print(") ) ");
 	    		
-	    		pw.print("this->vt[");
+	    		pw.print("this->_" + thisClass.getName() + "_" + variable.getName() + "->vt[");
 	    		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
 	    		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
-	    		pw.print("] )( (" + variable.getType().getCname() + ") this");
+	    		pw.print("] )( (" + variable.getType().getCname() + ") this->_" + thisClass.getName() + "_" + variable.getName());
 	    	} else {
 	    		pw.print("_" + method.getMethodClass().getName() + "_" + method.getName() + "(_" +  variable.getName() );
 	    	}
@@ -81,16 +81,18 @@ public class MessageSendToSelf extends MessageSend {
 		pw.print(")");
 	}
 
-    public MessageSendToSelf(Method method, ExprList parameterList) {
+    public MessageSendToSelf(Method method, ExprList parameterList, KraClass thisClass) {
     	this.variable = null;
     	this.method = method;
     	this.parameterList = parameterList;
+    	this.thisClass = thisClass;
     }
 
-    public MessageSendToSelf(Variable variable, Method method, ExprList parameterList) {
+    public MessageSendToSelf(Variable variable, Method method, ExprList parameterList, KraClass thisClass) {
     	this.variable = variable;
     	this.method = method;
     	this.parameterList = parameterList;
+    	this.thisClass = thisClass;
     }
 
     public String getName() {
@@ -121,5 +123,6 @@ public class MessageSendToSelf extends MessageSend {
     private Variable variable;
     private ExprList parameterList;
     private Method method;
+    private KraClass thisClass;
 
 }
