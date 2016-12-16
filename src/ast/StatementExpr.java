@@ -19,6 +19,9 @@ public class StatementExpr extends Statement {
 		leftExpr.genC(pw, false);
 		if(rightExpr != null) {
 			pw.print(" = ");
+			if(leftExpr.getType() instanceof KraClass ) {
+				pw.print("(" + leftExpr.getType().getCname() + ") ");
+			}
 			rightExpr.genC(pw, false);
 		}
 		pw.println(";");
