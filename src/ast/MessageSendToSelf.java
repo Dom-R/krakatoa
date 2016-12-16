@@ -30,10 +30,10 @@ public class MessageSendToSelf extends MessageSend {
 	    		
 	    		pw.print(") ) ");
 	    		
-	    		pw.print("_" + variable.getName() + "->vt[");
+	    		pw.print("this->vt[");
 	    		pw.print("" + method.getMethodClass().getMethodTable().indexOf(method.getName()));
 	    		// creio que podemos substituir a linha acima para pw.print("" + variable.getType().getMethodTable().indexOf(method.getName()));
-	    		pw.print("] )(_" + variable.getName());
+	    		pw.print("] )( (" + variable.getType().getCname() + ") this");
 	    	} else {
 	    		pw.print("_" + method.getMethodClass().getName() + "_" + method.getName() + "(_" +  variable.getName() );
 	    	}
@@ -65,7 +65,7 @@ public class MessageSendToSelf extends MessageSend {
     		pw.print(", ");
     		parameterList.genC(pw);
     	}
-    	pw.print(")");
+    	pw.print(" )");
     }
 
     @Override
