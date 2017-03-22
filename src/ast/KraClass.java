@@ -18,14 +18,14 @@ public class KraClass extends Type {
 	// Classe e metodos de KraClass que guarda metodos da tabela para o genC
 	//
    public class MethodTable {
-	   
+
 	   public MethodTable() {
 		   this.methodNameList = new ArrayList<String>();
 		   this.methodNameClass = new ArrayList<String>();
 	   }
-	   
+
 	   public void put(String methodName, String methodClassName) {
-		   
+
 		   int index = indexOf(methodName);
 		   if(index == -1) {
 			   methodNameList.add(methodName);
@@ -35,34 +35,34 @@ public class KraClass extends Type {
 			   methodNameClass.set(index, methodClassName);
 		   }
 	   }
-	   
+
 	   public int indexOf(String methodName) {
 		   return methodNameList.indexOf(methodName);
 	   }
-	   
+
 	   public int getSize() {
 		   return methodNameList.size();
 	   }
-	   
+
 	   public String getMethodName(int index) {
 		   return methodNameList.get(index);
 	   }
-	   
+
 	   public String getClassName(int index) {
 		   return methodNameClass.get(index);
 	   }
-	   
+
 	   private ArrayList<String> methodNameList;
 	   private ArrayList<String> methodNameClass;
    }
-   
+
    public MethodTable getMethodTable() {
 	   return methodTable;
    }
    //
    //
    //
-	
+
    public KraClass( String name ) {
       super(name);
       superclass = null;
@@ -138,7 +138,7 @@ public class KraClass extends Type {
 	   //
 	   //
 	   //
-	   
+
 	   //
 	   // gera struct
 	   //
@@ -147,28 +147,20 @@ public class KraClass extends Type {
 	   pw.printlnIdent("struct _St_" + getName() + " {");
 	   pw.add();
 	   pw.printlnIdent("Func *vt;");
-	   
+
 	   // Insere variaveis de instancia da superclasse
-	   if(superclass != null) {
-		   superclass.genCInstanceVariable(pw);
-	   }
-	   
-	   // Insere variaveis de instancia da classe
-	   Iterator<InstanceVariable> e = instanceVariableList.elements();
-	   while(e.hasNext()) {
-		   e.next().genC(pw, this);
-	   }
-	   
+	   genCInstanceVariable(pw);
+
 	   pw.printlnIdent("} _class_" + getName() + ";");
 	   pw.sub();
 	   pw.sub();
 	   //
 	   //
 	   //
-	   
+
 	   pw.println();
 	   pw.printlnIdent( getCname() + "new_" + getName() + "(void);");
-	   
+
 	   //
 	   // Gera metodos publicos
 	   //
@@ -182,7 +174,7 @@ public class KraClass extends Type {
 	   //
 	   //
 	   //
-	   
+
 	   //
 	   // Gera metodos privados
 	   //
@@ -194,15 +186,15 @@ public class KraClass extends Type {
 	   //
 	   //
 	   //
-	   
+
 	   pw.println();
-	   
+
 	   //
-	   // Gera tabela de metodos publicos(Falta fazer geracao com heranca)
+	   // Gera tabela de metodos publicos
 	   //
 	   pw.println("Func VTclass_" + getName() + "[] = {");
 	   pw.add();
-	   
+
 	   // Somente insere metodos publicos
 	   /*m = publicMethodList.elements();
 	   while(m.hasNext()) {
@@ -210,24 +202,24 @@ public class KraClass extends Type {
 		   pw.printIdent("( void (*)() ) _" + getName() + "_" + metodo.getName());
 		   if(m.hasNext()) pw.print(",");
 		   pw.println();
-	   
+
 	   }*/
-	   
+
 	   int size = methodTable.getSize();
 	   for(int i = 0; i < size; i++) {
 		   pw.printIdent("( void (*)() ) _" + methodTable.getClassName(i) + "_" + methodTable.getMethodName(i));
 		   if(i < (size - 1)) pw.print(",");
 		   pw.println();
 	   }
-	   
+
 	   pw.printlnIdent("};");
 	   pw.sub();
 	   //
 	   //
 	   //
-	   
+
 	   pw.println();
-	   
+
 	   //
 	   // gera funcao de alocacao de memoria para objeto da classe
 	   //
@@ -244,7 +236,7 @@ public class KraClass extends Type {
 	   pw.sub();
 	   pw.println("}");
    }
-   
+
    public void genKra(PW pw) {
 	   pw.print("class " + getName());
 	   if(superclass != null) pw.print(" extends " + superclass.getName());
@@ -272,7 +264,7 @@ public class KraClass extends Type {
 	   pw.sub();
 	   pw.println("}");
    }
-   
+
    // Metodo para printar variaveis de instancia de superclasses
    private void genCInstanceVariable(PW pw) {
 	   if(superclass != null) {
@@ -290,8 +282,8 @@ public class KraClass extends Type {
    private MethodList publicMethodList, privateMethodList;
    // m�todos p�blicos get e set para obter e iniciar as vari�veis acima,
    // entre outros m�todos
-   
+
    // variavel que guarda a tabela de metodos para o genC
    private MethodTable methodTable;
-   
+
 }
